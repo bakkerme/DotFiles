@@ -1,38 +1,51 @@
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
-call plug#begin('~/vimfiles/plugged')
+call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-sensible'
 Plug 'altercation/vim-colors-solarized'
-Plug 'junegunn/vim-easy-align'
+Plug 'mxw/vim-jsx'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'fholgado/minibufexpl.vim'
+Plug 'valloric/YouCompleteMe'
+Plug 'ap/vim-buftabline'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'vim-syntastic/syntastic'
 Plug 'chemzqm/vim-jsx-improve'
+Plug 'w0rp/ale'
+Plug 'rhysd/devdocs.vim'
+Plug 'ton/vim-bufsurf'
+Plug 'scrooloose/nerdcommenter'
+Plug 'itchyny/lightline.vim'
 
 " Initialize plugin system
 call plug#end()
 
-set guioptions-=m  "menu bar
-set guioptions-=T  "toolbar
-set guioptions-=r  "scrollbar
-
 let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
-set tm=100
+nmap gq :ALEFix<CR>
+set tm=600
 set relativenumber
+set smartindent
 set nu
+
+" Buffer Switching
+nmap <Leader>l :BufSurfForward<cr>
+nmap <Leader>h :BufSurfBack<cr>
+nnoremap <Leader>b :b
 
 " SYNTASTIC
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" DEVDOCS
+nmap K <Plug>(devdocs-under-cursor)
+let g:devdocs_filetype_map = {
+  \   'javascript.jsx': 'react',
+  \ }
 
 nnoremap <Leader>w :w<CR>
 vmap <Leader>y "+y
@@ -41,27 +54,40 @@ nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
-"
-" Map buffers to leader+number
-nnoremap <Leader>1 :1b<CR>
-nnoremap <Leader>2 :2b<CR>
-nnoremap <Leader>3 :3b<CR>
-nnoremap <Leader>4 :4b<CR>
-nnoremap <Leader>5 :5b<CR>
-nnoremap <Leader>6 :6b<CR>
-nnoremap <Leader>7 :7b<CR>
-nnoremap <Leader>8 :8b<CR>
-nnoremap <Leader>9 :9b<CR>
-nnoremap <Leader>0 :10b<CR>
 
 " TYPO FIX
 map q: :q
 
-set guifont=InputMono:h9
+" NERDCommenter
+let g:NERDSpaceDelims = 1
+
 syntax enable
 set background=dark
 colorscheme solarized
-"
+set guifont=InputMono\ Light:h14
+set linespace=3
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set number
+set relativenumber
+set hidden
+
+let g:jsx_ext_required = 0
+let g:javascript_plugin_jsdoc = 1
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 0
+
+" buftaline
+let g:buftabline_numbers = 1
+
+" lightline
+let g:lightline = {
+    \ 'colorscheme': 'solarized',
+    \ }
+
 " vp doesn't replace paste buffer
 function! RestoreRegister()
   let @" = s:restore_reg
@@ -72,3 +98,15 @@ function! s:Repl()
   return "p@=RestoreRegister()\<cr>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+" ALE
+filetype off
+let &runtimepath.=',~/.vim/bundle/ale'
+filetype plugin on 
+
+let g:ale_fixers = {
+  \   'javascript': [
+  \       'eslint',
+  \   ],
+  \}
+
