@@ -5,15 +5,19 @@ Plug 'tpope/vim-sensible'
 Plug 'altercation/vim-colors-solarized'
 Plug 'mxw/vim-jsx'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'valloric/YouCompleteMe'
 Plug 'ap/vim-buftabline'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'w0rp/ale'
+Plug 'Valloric/YouCompleteMe'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
+Plug 'guns/vim-clojure-static'
+
+"Clojure dev
+Plug 'tpope/vim-fireplace'
 
 " Initialize plugin system
 call plug#end()
@@ -26,6 +30,9 @@ set tm=600
 set relativenumber
 set smartindent
 set nu
+set guioptions-=m  "menu bar
+set guioptions-=T  "toolbar
+set guioptions-=r  "scrollbar
 
 " Buffer Switching
 nmap <Leader>l :BufSurfForward<cr>
@@ -34,9 +41,6 @@ nnoremap <Leader>b :b
 
 " DEVDOCS
 nmap K <Plug>(devdocs-under-cursor)
-let g:devdocs_filetype_map = {
-  \   'javascript.jsx': 'react',
-  \ }
 
 nnoremap <Leader>w :w<CR>
 vmap <Leader>y "+y
@@ -55,7 +59,12 @@ let g:NERDSpaceDelims = 1
 syntax enable
 set background=dark
 colorscheme solarized
-set guifont=InputMono\ Light:h14
+
+set guifont=Input\ Mono\ Light\ 10
+if has("gui_macvim")
+  set guifont=InputMono\ Light:h14
+endif
+
 set linespace=3
 set tabstop=2
 set shiftwidth=2
@@ -101,3 +110,13 @@ let g:ale_fixers = {
   \   ],
   \}
 
+" if has("autocmd")
+  " au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
+  " au InsertEnter,InsertChange *
+    " \ if v:insertmode == 'i' | 
+    " \   silent execute '!echo -ne "\e[5 q"' | redraw! |
+    " \ elseif v:insertmode == 'r' |
+    " \   silent execute '!echo -ne "\e[3 q"' | redraw! |
+    " \ endif
+  " au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+" endif
