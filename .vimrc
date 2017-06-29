@@ -9,15 +9,16 @@ Plug 'ap/vim-buftabline'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'w0rp/ale'
-Plug 'Valloric/YouCompleteMe'
+Plug 'valloric/YouCompleteMe'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
-Plug 'guns/vim-clojure-static'
+Plug 'jiangmiao/auto-pairs'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-clojure-static'
 
 " Initialize plugin system
 call plug#end()
@@ -26,18 +27,25 @@ let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
 nmap gq :ALEFix<CR>
-set tm=600
+set tm=900
 set relativenumber
 set smartindent
 set nu
 set guioptions-=m  "menu bar
 set guioptions-=T  "toolbar
 set guioptions-=r  "scrollbar
+set mouse=a
+set ttyfast
+set lazyredraw
+set nowrap
 
 " Buffer Switching
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
 nnoremap <Leader>b :b
+
+" Paste
+map <Leader>/ <Leader>c<Leader>
 
 " DEVDOCS
 nmap K <Plug>(devdocs-under-cursor)
@@ -53,6 +61,9 @@ vmap <Leader>P "+P
 " TYPO FIX
 map q: :q
 
+" Copy file path
+nmap cp :let @" = expand("%")
+
 " NERDCommenter
 let g:NERDSpaceDelims = 1
 
@@ -62,7 +73,7 @@ colorscheme solarized
 
 set guifont=Input\ Mono\ Light\ 10
 if has("gui_macvim")
-  set guifont=InputMono\ Light:h14
+  set guifont=InputMono\ Light:h13
 endif
 
 set linespace=3
@@ -88,6 +99,10 @@ let g:lightline = {
     \ 'colorscheme': 'solarized',
     \ }
 
+" Auto Pairs
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsShortcutBackInsert = '<M-b>'
+
 " vp doesn't replace paste buffer
 function! RestoreRegister()
   let @" = s:restore_reg
@@ -103,6 +118,10 @@ vmap <silent> <expr> p <sid>Repl()
 filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin on 
+
+filetype on
+filetype plugin on
+filetype indent on
 
 let g:ale_fixers = {
   \   'javascript': [
