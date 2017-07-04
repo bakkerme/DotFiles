@@ -14,7 +14,7 @@ Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace'
@@ -38,6 +38,7 @@ set mouse=a
 set ttyfast
 set lazyredraw
 set nowrap
+set smartindent
 
 " Buffer Switching
 nmap <Leader>l :BufSurfForward<cr>
@@ -62,7 +63,7 @@ vmap <Leader>P "+P
 map q: :q
 
 " Copy file path
-nmap cp :let @" = expand("%")
+nmap cp :let @" = expand("%")<CR>
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -117,11 +118,7 @@ vmap <silent> <expr> p <sid>Repl()
 " ALE
 filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
-filetype plugin on 
-
-filetype on
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 let g:ale_fixers = {
   \   'javascript': [
