@@ -14,7 +14,7 @@ Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
-" Plug 'jiangmiao/auto-pairs'
+Plug 'christoomey/vim-tmux-navigator' 
 
 "Clojure dev
 Plug 'tpope/vim-fireplace'
