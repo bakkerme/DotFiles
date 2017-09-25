@@ -2,7 +2,6 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'tpope/vim-sensible'
-Plug 'altercation/vim-colors-solarized'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim'
@@ -18,12 +17,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
+
+Plug 'altercation/vim-colors-solarized'
 Plug 'robertmeta/nofrils'
+Plug 'https://bitbucket.org/kisom/eink.vim.git'
+Plug 'xero/blaquemagick.vim'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-
+ 
 " Initialize plugin system
 call plug#end()
 
@@ -62,24 +65,34 @@ set expandtab
 set number
 set relativenumber
 set hidden
-
-
-syntax enable
-set background=dark
-colorscheme nofrils-dark 
+set synmaxcol=120
 
 set guifont=Input\ Mono\ Light\ 10
 if has("gui_macvim")
   set guifont=InputMono\ Light:h14
 endif
 
-" Nofrils
+" Nofril
 let g:nofrils_heavylinenumbers=1
 let g:nofrils_strbackgrounds=1
+
+syntax enable
+set background=dark
+" colorscheme nofrils-dark 
+colorscheme blaquemagick
 
 " Buffer Switching
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
+" nnoremap <Leader>b :b
+" 
+if bufwinnr(1)
+  map + <C-W>+
+  map - <C-W>-
+endif
+    
+map <c-n> <c-w>5<
+map <c-m> <c-w>>
 
 let g:buffergator_autoexpand_on_split = 0
 let g:buffergator_autoupdate = 1
@@ -107,6 +120,7 @@ nmap K <Plug>(devdocs-under-cursor)
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
+map <Leader>/ <Leader>c<Leader>
 
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
@@ -120,13 +134,19 @@ let g:buftabline_numbers = 1
 
 " lightline
 let g:lightline = {
-    \ 'colorscheme': 'solarized',
-    \ }
+  \ 'colorscheme': 'seoul256',
+  \ 'active': {
+  \   'left': [ [ 'filename' ],
+  \             [ 'gitbranch' ] ],
+  \   'right': [ [ 'percent', 'lineinfo' ],
+  \              [ 'fileencoding', 'filetype' ] ]
+  \ },
+  \ 'separator': { 'left': '▓▒░', 'right': '░▒▓' },
+  \ 'subseparator': { 'left': '▒', 'right': '░' }
+\ }
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:SuperTabCompletionContexts =  ['flowcomplete#Complete'] + g:SuperTabCompletionContexts
 
 " vp doesn't replace paste buffer
 function! RestoreRegister()
