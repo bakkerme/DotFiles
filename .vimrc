@@ -21,6 +21,7 @@ Plug 'tpope/vim-surround'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
 Plug 'robertmeta/nofrils'
+Plug 'https://bitbucket.org/kisom/eink.vim.git'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace'
@@ -49,6 +50,7 @@ set mouse=a
 set ttyfast
 set lazyredraw
 set nowrap
+set synmaxcol=120
 
 " Indetntation
 inoremap <CR> <CR>x<BS>
@@ -59,6 +61,14 @@ nnoremap O Ox<BS>
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
 " nnoremap <Leader>b :b
+" 
+if bufwinnr(1)
+  map + <C-W>+
+  map - <C-W>-
+endif
+    
+map <c-n> <c-w>5<
+map <c-m> <c-w>>
 
 let g:buffergator_autoexpand_on_split = 0
 let g:buffergator_autoupdate = 1
@@ -148,8 +158,8 @@ let g:ycm_filepath_completion_use_working_dir = 1
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
-let g:SuperTabCompletionContexts =  ['flowcomplete#Complete'] + g:SuperTabCompletionContexts
+" let g:SuperTabContextDefaultCompletionType = "<c-n>"
+" let g:SuperTabCompletionContexts =  ['flowcomplete#Complete'] + g:SuperTabCompletionContexts
 
 " vp doesn't replace paste buffer
 function! RestoreRegister()
