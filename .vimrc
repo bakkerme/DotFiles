@@ -4,9 +4,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
@@ -15,13 +15,14 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'jeetsukumaran/vim-buffergator'
+" Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
 
 Plug 'altercation/vim-colors-solarized'
 Plug 'robertmeta/nofrils'
 Plug 'https://bitbucket.org/kisom/eink.vim.git'
 Plug 'xero/blaquemagick.vim'
+Plug 'beigebrucewayne/skull-vim'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -41,11 +42,6 @@ map q: :q
 
 " Copy file path
 nmap cp :let @" = expand("%")<CR>
-
-" Indentation
-inoremap <CR> <CR>x<BS>
-nnoremap o ox<BS>
-nnoremap O Ox<BS>
 
 set tm=900
 set relativenumber
@@ -77,29 +73,32 @@ let g:nofrils_heavylinenumbers=1
 let g:nofrils_strbackgrounds=1
 
 syntax enable
-set background=dark
+set background=light
+colorscheme eink
+highlight Cursor guifg=black guibg=white
 " colorscheme nofrils-dark 
-colorscheme blaquemagick
+" colorscheme blaquemagick
 
-" Buffer Switching
+" ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
-" nnoremap <Leader>b :b
-" 
+
 if bufwinnr(1)
   map + <C-W>+
   map - <C-W>-
+  map <c-n> <c-w>5<
+  map <c-m> <c-w>5>
 endif
-    
-map <c-n> <c-w>5<
-map <c-m> <c-w>>
 
-let g:buffergator_autoexpand_on_split = 0
-let g:buffergator_autoupdate = 1
-let g:buffergator_autodismiss_on_select = 0
-let g:buffergator_show_full_directory_path = 0
-let g:buffergator_vsplit_size = 30
 
+nmap <Leader>b :ls<cr> :b
+
+
+" ----------- SEARCH ----------- "
+set wildignore+=**/node_modules/*
+nmap <Leader>s :grep -r --exclude-dir node_modules --exclude tags "" ./
+nmap <c-p> :e **/
+set hlsearch
 
 " ---------- FLOW ---------- "
 " Vim Flow
@@ -125,9 +124,9 @@ map <Leader>/ <Leader>c<Leader>
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 0
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_working_path_mode = 0
 
 " buftaline
 let g:buftabline_numbers = 1
@@ -178,3 +177,6 @@ let g:ale_echo_msg_format = '%linter% says %s'
 nnoremap <leader>an :ALENextWrap<cr>
 nnoremap <leader>ap :ALEPreviousWrap<cr>
 
+
+" Hack fix enter being bound wrong
+nnoremap <cr> <cr>
