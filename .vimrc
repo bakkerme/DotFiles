@@ -4,25 +4,35 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
 " Plug 'ervandew/supertab'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
-Plug 'itchyny/lightline.vim'
+" Plug 'itchyny/lightline.vim'
 Plug 'christoomey/vim-tmux-navigator' 
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 " Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
+Plug 'takac/vim-hardtime'
 
+Plug 'jaxbot/semantic-highlight.vim'
+" Plug 'bigfish/vim-js-context-coloring'
+
+" Color Schemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'robertmeta/nofrils'
 Plug 'https://bitbucket.org/kisom/eink.vim.git'
 Plug 'xero/blaquemagick.vim'
 Plug 'beigebrucewayne/skull-vim'
+Plug 'wolverian/minimal'
+Plug 'elmindreda/vimcolors'
+Plug 'MidnaPeach/neonwave.vim'
+Plug 'vim-scripts/ibmedit.vim'
+Plug 'vim-scripts/Shades-of-Amber'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -50,6 +60,7 @@ set nu
 set guioptions-=m  "menu bar
 set guioptions-=T  "toolbar
 set guioptions-=r  "scrollbar
+set go-=egLb "everything else
 set mouse=a
 set ttyfast
 set lazyredraw
@@ -61,7 +72,7 @@ set expandtab
 set number
 set relativenumber
 set hidden
-set synmaxcol=120
+" set synmaxcol=120
 
 set guifont=Input\ Mono\ Light\ 10
 if has("gui_macvim")
@@ -73,9 +84,13 @@ let g:nofrils_heavylinenumbers=1
 let g:nofrils_strbackgrounds=1
 
 syntax enable
-set background=light
-colorscheme eink
-highlight Cursor guifg=black guibg=white
+set background=dark
+colorscheme phosphor
+" highlight Cursor guifg=white guibg=black
+" hi Search guibg=black guifg=yellow
+hi Search guibg=yellow guifg=black
+hi Search cterm=NONE ctermfg=black ctermbg=yellow
+
 " colorscheme nofrils-dark 
 " colorscheme blaquemagick
 
@@ -91,13 +106,17 @@ if bufwinnr(1)
 endif
 
 
-nmap <Leader>b :ls<cr> :b
+nmap <Leader>b :ls<cr> :b<space>
+
+" ----------- HARDTIME ----------- "
+let g:hardtime_default_on = 0
+let g:hardtime_allow_different_key = 1
 
 
 " ----------- SEARCH ----------- "
 set wildignore+=**/node_modules/*
 nmap <Leader>s :grep -r --exclude-dir node_modules --exclude tags "" ./
-nmap <c-p> :e **/
+" nmap <c-p> : e **/
 set hlsearch
 
 " ---------- FLOW ---------- "
@@ -124,8 +143,8 @@ map <Leader>/ <Leader>c<Leader>
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
 
-" let g:ctrlp_map = '<c-p>'
-" let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 " let g:ctrlp_working_path_mode = 0
 
 " buftaline
@@ -133,7 +152,7 @@ let g:buftabline_numbers = 1
 
 " lightline
 let g:lightline = {
-  \ 'colorscheme': 'seoul256',
+  \ 'colorscheme': 'landscape',
   \ 'active': {
   \   'left': [ [ 'filename' ],
   \             [ 'gitbranch' ] ],
@@ -180,3 +199,10 @@ nnoremap <leader>ap :ALEPreviousWrap<cr>
 
 " Hack fix enter being bound wrong
 nnoremap <cr> <cr>
+
+function! HlIndent()
+  let currLine = getline('.')
+  let matchs = matchstrpos(currLine, '^\(\s\+\)')
+  let regex = '^\s\{' . matchs[2] . '}'
+  execute 'normal! /' . regex . '<CR>'
+endfunction
