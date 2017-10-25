@@ -18,6 +18,7 @@ Plug 'tpope/vim-surround'
 " Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
 Plug 'takac/vim-hardtime'
+Plug 'terryma/vim-smooth-scroll'
 
 Plug 'jaxbot/semantic-highlight.vim'
 " Plug 'bigfish/vim-js-context-coloring'
@@ -33,6 +34,7 @@ Plug 'elmindreda/vimcolors'
 Plug 'MidnaPeach/neonwave.vim'
 Plug 'vim-scripts/ibmedit.vim'
 Plug 'vim-scripts/Shades-of-Amber'
+Plug 'dgraham/xcode-low-key-vim'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -84,15 +86,12 @@ let g:nofrils_heavylinenumbers=1
 let g:nofrils_strbackgrounds=1
 
 syntax enable
-set background=dark
-colorscheme phosphor
+set background=light
+colorscheme xcode-low-key-vim
 " highlight Cursor guifg=white guibg=black
 " hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
-
-" colorscheme nofrils-dark 
-" colorscheme blaquemagick
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
@@ -126,9 +125,9 @@ let g:flow#enable = 0
 "Use locally installed flow
 " let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
 let local_flow = finddir('node_modules', '../') . '/.bin/flow'
-if matchstr(local_flow, "^\/\\w") == ''
-    let local_flow= getcwd() . "/" . local_flow
-endif
+" if matchstr(local_flow, "^\/\\w") == ''
+    " let local_flow= getcwd() . "/" . local_flow
+" endif
 if executable(local_flow)
   let g:flow#flowpath = local_flow
 endif
@@ -140,31 +139,18 @@ nmap K <Plug>(devdocs-under-cursor)
 let g:NERDSpaceDelims = 1
 map <Leader>/ <Leader>c<Leader>
 
+" ------------- Smooth Scrolling ------------
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 16)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 16)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 16)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 16)<CR>
+
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 " let g:ctrlp_working_path_mode = 0
-
-" buftaline
-let g:buftabline_numbers = 1
-
-" lightline
-let g:lightline = {
-  \ 'colorscheme': 'landscape',
-  \ 'active': {
-  \   'left': [ [ 'filename' ],
-  \             [ 'gitbranch' ] ],
-  \   'right': [ [ 'percent', 'lineinfo' ],
-  \              [ 'fileencoding', 'filetype' ] ]
-  \ },
-  \ 'separator': { 'left': '▓▒░', 'right': '░▒▓' },
-  \ 'subseparator': { 'left': '▒', 'right': '░' }
-\ }
-
-" Supertab
-let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " vp doesn't replace paste buffer
 function! RestoreRegister()
