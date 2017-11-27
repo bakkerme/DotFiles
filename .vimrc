@@ -114,7 +114,7 @@ let g:hardtime_allow_different_key = 1
 
 " ----------- SEARCH ----------- "
 set wildignore+=**/node_modules/*
-nmap <Leader>s :grep -r --exclude-dir node_modules --exclude tags "" ./
+nmap <Leader>s :grep -r --ignore-dir node_modules --ignore tags "" ./
 " nmap <c-p> : e **/
 set hlsearch
 
@@ -150,7 +150,15 @@ let g:javascript_plugin_jsdoc = 1
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_working_path_mode = 0
+let g:ctrlp_path_nolim = 1
+let g:ctrlp_working_path_mode = 0
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
 
 " vp doesn't replace paste buffer
 function! RestoreRegister()
