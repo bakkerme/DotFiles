@@ -200,3 +200,7 @@ function! HlIndent()
   let regex = '^\s\{' . matchs[2] . '}'
   execute 'normal! /' . regex . '<CR>'
 endfunction
+
+function! FlowGen()
+ execute("!./node_modules/.bin/flow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
+endfunction
