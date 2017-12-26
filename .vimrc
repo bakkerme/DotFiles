@@ -87,7 +87,7 @@ let g:nofrils_strbackgrounds=1
 
 syntax enable
 set background=light
-colorscheme xcode-low-key-vim
+colorscheme xcode-low-key
 " highlight Cursor guifg=white guibg=black
 " hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
