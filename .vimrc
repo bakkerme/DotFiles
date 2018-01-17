@@ -17,11 +17,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 " Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
-Plug 'takac/vim-hardtime'
 Plug 'terryma/vim-smooth-scroll'
 
-Plug 'jaxbot/semantic-highlight.vim'
-" Plug 'bigfish/vim-js-context-coloring'
+" Snippets
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+
 
 " Color Schemes
 Plug 'altercation/vim-colors-solarized'
@@ -59,10 +62,7 @@ set tm=900
 set relativenumber
 set smartindent
 set nu
-set guioptions-=m  "menu bar
-set guioptions-=T  "toolbar
-set guioptions-=r  "scrollbar
-set go-=egLb "everything else
+set guioptions=
 set mouse=a
 set ttyfast
 set lazyredraw
@@ -87,7 +87,7 @@ let g:nofrils_strbackgrounds=1
 
 syntax enable
 set background=light
-colorscheme xcode-low-key
+colorscheme neonwave
 " highlight Cursor guifg=white guibg=black
 " hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
@@ -203,4 +203,37 @@ endfunction
 
 function! FlowGen()
  execute("!./node_modules/.bin/flow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
+endfunction
+
+function! Wipeout()
+  " list of *all* buffer numbers
+  let l:buffers = range(1, bufnr('$'))
+
+  " what tab page are we in?
+  let l:currentTab = tabpagenr()
+  try
+    " go through all tab pages
+    let l:tab = 0
+    while l:tab < tabpagenr('$')
+      let l:tab += 1
+
+      " go through all windows
+      let l:win = 0
+      while l:win < winnr('$')
+        let l:win += 1
+        " whatever buffer is in this window in this tab, remove it from
+        " l:buffers list
+        let l:thisbuf = winbufnr(l:win)
+        call remove(l:buffers, index(l:buffers, l:thisbuf))
+      endwhile
+    endwhile
+
+    " if there are any buffers left, delete them
+    if len(l:buffers)
+      execute 'bwipeout' join(l:buffers)
+    endif
+  finally
+    " go back to our original tab page
+    execute 'tabnext' l:currentTab
+  endtry
 endfunction
