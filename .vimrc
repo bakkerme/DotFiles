@@ -17,6 +17,8 @@ Plug 'flowtype/vim-flow'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'jungomi/vim-mdnquery'
 
+Plug 'roman/golden-ratio'
+
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -96,6 +98,9 @@ endif
 " hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
+
+
+let g:golden_ratio_exclude_nonmodifiable = 1
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
