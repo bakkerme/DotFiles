@@ -6,18 +6,16 @@ Plug 'chemzqm/vim-jsx-improve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
-" Plug 'ervandew/supertab'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
-" Plug 'itchyny/lightline.vim'
 Plug 'christoomey/vim-tmux-navigator' 
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-" Plug 'jeetsukumaran/vim-buffergator'
 Plug 'flowtype/vim-flow'
 Plug 'terryma/vim-smooth-scroll'
+Plug 'jungomi/vim-mdnquery'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -76,9 +74,10 @@ set relativenumber
 set hidden
 " set synmaxcol=120
 
-set guifont=Input\ Mono\ Light\ 10
 if has("gui_macvim")
   set guifont=InputMono\ Light:h14
+else
+  set guifont=Input\ Mono\ Light\ 10
 endif
 
 " Nofril
@@ -86,8 +85,13 @@ let g:nofrils_heavylinenumbers=1
 let g:nofrils_strbackgrounds=1
 
 syntax enable
-set background=light
-colorscheme neonwave
+if &diff
+  set background=light
+  colorscheme xcode-low-key
+else
+  set background=dark
+  colorscheme neonwave
+endif
 " highlight Cursor guifg=white guibg=black
 " hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
@@ -187,8 +191,8 @@ let g:ale_lint_delay = 1500
 " let g:ale_javascript_eslint_options = '-c ../.eslintrc'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
-nnoremap <leader>an :ALENextWrap<cr>
-nnoremap <leader>ap :ALEPreviousWrap<cr>
+nnoremap gan :ALENextWrap<cr>
+nnoremap gap :ALEPreviousWrap<cr>
 
 
 " Hack fix enter being bound wrong
