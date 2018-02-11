@@ -17,8 +17,6 @@ Plug 'flowtype/vim-flow'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'jungomi/vim-mdnquery'
 
-" Plug 'roman/golden-ratio'
-
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -101,7 +99,7 @@ hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
 
-let g:golden_ratio_exclude_nonmodifiable = 1
+let g:vim_markdown_folding_disabled = 1
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
@@ -211,8 +209,14 @@ function! HlIndent()
   execute 'normal! /' . regex . '<CR>'
 endfunction
 
+function! LineWidth()
+  execute("vertical resize " . (strlen(getline(".")) + 10))
+endfunction
+
+nmap gl :call LineWidth()<cr>
+
 function! FlowGen()
- execute("!./node_modules/.bin/flow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
+ execute("!glow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
 endfunction
 
 function! Wipeout()
