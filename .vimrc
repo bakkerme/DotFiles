@@ -17,7 +17,7 @@ Plug 'flowtype/vim-flow'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'jungomi/vim-mdnquery'
 
-Plug 'roman/golden-ratio'
+" Plug 'roman/golden-ratio'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -74,6 +74,7 @@ set expandtab
 set number
 set relativenumber
 set hidden
+set backupcopy=yes
 " set synmaxcol=120
 
 if has("gui_macvim")
