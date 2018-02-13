@@ -122,8 +122,7 @@ let g:hardtime_allow_different_key = 1
 
 " ----------- SEARCH ----------- "
 set wildignore+=**/node_modules/*
-nmap <Leader>s :grep -r --ignore-dir node_modules --ignore tags "" ./
-" nmap <c-p> : e **/
+nmap <Leader>s :grep -r --ignore-dir node_modules --vimgrep --js --ignore tags "" ./<left><left><left><left>
 set hlsearch
 
 " ---------- FLOW ---------- "
@@ -131,11 +130,7 @@ set hlsearch
 let g:flow#enable = 0
 
 "Use locally installed flow
-" let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
 let local_flow = finddir('node_modules', '../') . '/.bin/flow'
-" if matchstr(local_flow, "^\/\\w") == ''
-    " let local_flow= getcwd() . "/" . local_flow
-" endif
 if executable(local_flow)
   let g:flow#flowpath = local_flow
 endif
