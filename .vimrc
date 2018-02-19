@@ -36,6 +36,7 @@ Plug 'MidnaPeach/neonwave.vim'
 Plug 'vim-scripts/ibmedit.vim'
 Plug 'vim-scripts/Shades-of-Amber'
 Plug 'dgraham/xcode-low-key-vim'
+Plug 'vim-scripts/mayansmoke'
 
 "Clojure dev
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -65,7 +66,6 @@ set mouse=a
 set ttyfast
 set lazyredraw
 set nowrap
-set linespace=3
 set tabstop=2
 set shiftwidth=2
 set expandtab
@@ -77,8 +77,10 @@ set backupcopy=yes
 
 if has("gui_macvim")
   set guifont=InputMono\ Light:h14
+  set linespace=3
 else
-  set guifont=Input\ Mono\ Light\ 10
+  set guifont=Input\ Mono\ Light\ 8
+  set linespace=1
 endif
 
 " Nofril
@@ -91,7 +93,7 @@ if &diff
   colorscheme xcode-low-key
 else
   set background=dark
-  colorscheme neonwave
+  colorscheme mayansmoke 
 endif
 " highlight Cursor guifg=white guibg=black
 " hi Search guibg=black guifg=yellow
@@ -114,11 +116,6 @@ endif
 
 
 nmap <Leader>b :ls<cr> :b<space>
-
-" ----------- HARDTIME ----------- "
-let g:hardtime_default_on = 0
-let g:hardtime_allow_different_key = 1
-
 
 " ----------- SEARCH ----------- "
 set wildignore+=**/node_modules/*
@@ -209,6 +206,8 @@ function! LineWidth()
 endfunction
 
 nmap gl :call LineWidth()<cr>
+nmap gno :NERDTreeToggle<cr>
+nmap gnf :NERDTreeFind<cr>
 
 function! FlowGen()
  execute("!glow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")

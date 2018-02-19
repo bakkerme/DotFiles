@@ -95,3 +95,4 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source /home/brandon/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+eval "$(direnv hook zsh)"
