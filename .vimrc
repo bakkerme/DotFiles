@@ -114,8 +114,10 @@ if bufwinnr(1)
   map <c-m> <c-w>5>
 endif
 
-
 nmap <Leader>b :ls<cr> :b<space>
+
+" ----------- FILE TYPES ------- "
+au BufNewFile,BufRead *.ejs set filetype=javascript
 
 " ----------- SEARCH ----------- "
 set wildignore+=**/node_modules/*
@@ -183,7 +185,7 @@ let g:ale_fixers = {
   \}
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_delay = 1500
+let g:ale_lint_delay = 500
 " let g:ale_javascript_eslint_options = '-c ../.eslintrc'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
@@ -206,6 +208,8 @@ function! LineWidth()
 endfunction
 
 nmap gl :call LineWidth()<cr>
+nmap <Leader>r :%s //g<left><left>
+
 nmap gno :NERDTreeToggle<cr>
 nmap gnf :NERDTreeFind<cr>
 

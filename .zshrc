@@ -1,5 +1,7 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.yarn/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/brandon/.oh-my-zsh
@@ -95,4 +97,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source /home/brandon/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /home/brandon/.env
 eval "$(direnv hook zsh)"
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
