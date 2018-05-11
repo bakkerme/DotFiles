@@ -64,6 +64,8 @@ plugins=(
   git
   zsh-syntax-highlighting
   zsh-autosuggestions
+  history-substring-search
+  vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh

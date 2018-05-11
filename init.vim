@@ -36,6 +36,10 @@ Plug 'vim-scripts/ibmedit.vim'
 Plug 'vim-scripts/Shades-of-Amber'
 Plug 'dgraham/xcode-low-key-vim'
 Plug 'vim-scripts/mayansmoke'
+Plug 'vim-scripts/automation.vim'
+Plug 'andreypopp/vim-colors-plain'
+Plug 'nathanlong/vim-colors-writer'
+Plug 'thenewvu/vim-colors-sketching' 
 
 "Clojure dev
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -44,6 +48,9 @@ Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 "PHP
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'StanAngeloff/php.vim'
+
+"NVIM
+Plug 'equalsraf/neovim-gui-shim'
  
 " Initialize plugin system
 call plug#end()
@@ -69,35 +76,13 @@ set mouse=a
 set ttyfast
 set lazyredraw
 set nowrap
-set tabstop=2
-set shiftwidth=2
-set expandtab
+" set tabstop=4
+" set shiftwidth=4
+" set expandtab
 set number
 set relativenumber
 set hidden
 set backupcopy=yes
-
-" set synmaxcol=120
-
-" if has("gui_macvim")
-  " set guifont=InputMono\ Light:h14
-  " set linespace=3
-" else
-  " set guifont=Input\ Mono\ Light\ 12
-  " set linespace=1
-" endif
-"
-if has("gui_running")
-  if has("gui_gtk2") || has("gui_gtk3")
-    set guifont=Input\ Mono\ 11
-  elseif has("gui_photon")
-    set guifont=Input\ Mono:s11
-  elseif has("x11")
-    set guifont=-*-liberation\ mono-bold-*-*-*-*-*-*-*-*-*-*-*
-  else
-    set guifont=Input_Mono:h11:cDEFAULT
-  endif
-endif
 
 " Nofril
 let g:nofrils_heavylinenumbers=1
@@ -109,13 +94,15 @@ if &diff
   colorscheme xcode-low-key
 else
   set background=dark
-  colorscheme mayansmoke 
+  colorscheme minimal
 endif
 " highlight Cursor guifg=white guibg=black
 " hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
+" let g:gonvim_draw_statusline = 0
+" let g:gonvim_draw_tabline = 0
 
 let g:vim_markdown_folding_disabled = 1
 
@@ -134,19 +121,15 @@ nmap <Leader>b :ls<cr> :b<space>
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
-au FileType php setl sw=4 ts=4 et
-let php_html_load=0
-let php_html_in_heredoc=0
-let php_html_in_nowdoc=0
-
-let php_sql_query=0
-let php_sql_heredoc=0
-let php_sql_nowdoc=0
-
-au FileType javascript setl sw=4 sts=4 et
+au FileType php setl sw=4 ts=4
+" au FileType javascript setl sw=2 ts=2 et
+au FileType javascript setl sw=4 sts=4
+let php_sql_query = 0
+let php_sql_heredoc = 0
+let php_sql_nowdoc = 0
 
 " ----------- SEARCH ----------- "
-set wildignore+=**/node_modules/*
+set wildignore=**/node_modules/*,**/vendor/*
 nmap <Leader>s :grep -r --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
 set hlsearch
 
@@ -185,7 +168,7 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore vendor -g ""'
 endif
 
 " vp doesn't replace paste buffer
@@ -204,6 +187,7 @@ filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
+let g:ale_linters = {'php': ['php']}
 let g:ale_fixers = {
   \   'javascript': [
   \       'eslint'
@@ -277,4 +261,10 @@ function! Wipeout()
     " go back to our original tab page
     execute 'tabnext' l:currentTab
   endtry
+endfunction
+
+" Makes it easier to deal with JS files in PHP
+function! JSPHP()
+       set filetype=javascript
+       set syntax=javascript
 endfunction
