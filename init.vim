@@ -13,8 +13,10 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'flowtype/vim-flow'
+" Plug 'flowtype/vim-flow'
 Plug 'terryma/vim-smooth-scroll'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'itchyny/lightline.vim'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -22,36 +24,26 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
-
 " Color Schemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'robertmeta/nofrils'
 Plug 'https://bitbucket.org/kisom/eink.vim.git'
-Plug 'xero/blaquemagick.vim'
-Plug 'beigebrucewayne/skull-vim'
 Plug 'wolverian/minimal'
 Plug 'elmindreda/vimcolors'
 Plug 'MidnaPeach/neonwave.vim'
-Plug 'vim-scripts/ibmedit.vim'
-Plug 'vim-scripts/Shades-of-Amber'
 Plug 'dgraham/xcode-low-key-vim'
 Plug 'vim-scripts/mayansmoke'
-Plug 'vim-scripts/automation.vim'
 Plug 'andreypopp/vim-colors-plain'
-Plug 'nathanlong/vim-colors-writer'
-Plug 'thenewvu/vim-colors-sketching' 
+Plug 'Lokaltog/vim-monotone'
 
 "Clojure dev
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 
 "PHP
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'StanAngeloff/php.vim'
 
-"NVIM
-Plug 'equalsraf/neovim-gui-shim'
- 
 " Initialize plugin system
 call plug#end()
 
@@ -60,7 +52,7 @@ imap jk <Esc>
 imap kj <Esc>
 nmap gq :ALEFix<CR>
 nnoremap <Leader>w :w<CR>
- 
+
 " TYPO FIX
 map q: :q
 
@@ -68,17 +60,11 @@ map q: :q
 nmap cp :let @" = expand("%")<CR>
 
 set tm=900
-" set relativenumber
 set smartindent
 set nu
 set guioptions=
 set mouse=a
-set ttyfast
-set lazyredraw
 set nowrap
-" set tabstop=4
-" set shiftwidth=4
-" set expandtab
 set number
 set relativenumber
 set hidden
@@ -96,15 +82,9 @@ else
   set background=dark
   colorscheme minimal
 endif
-" highlight Cursor guifg=white guibg=black
-" hi Search guibg=black guifg=yellow
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
-" let g:gonvim_draw_statusline = 0
-" let g:gonvim_draw_tabline = 0
-
-let g:vim_markdown_folding_disabled = 1
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
@@ -117,7 +97,7 @@ if bufwinnr(1)
   map <c-m> <c-w>5>
 endif
 
-nmap <Leader>b :ls<cr> :b<space>
+nmap <Leader>b :ls!<cr>:buffer<space>
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
@@ -127,6 +107,10 @@ au FileType javascript setl sw=4 sts=4
 let php_sql_query = 0
 let php_sql_heredoc = 0
 let php_sql_nowdoc = 0
+let g:vim_markdown_folding_disabled = 1
+let g:jsx_ext_required = 0
+let g:javascript_plugin_jsdoc = 1
+vmap <silent> <expr> p <sid>Repl()
 
 " ----------- SEARCH ----------- "
 set wildignore=**/node_modules/*,**/vendor/*
@@ -143,22 +127,24 @@ if executable(local_flow)
   let g:flow#flowpath = local_flow
 endif
 
-" DEVDOCS
+" ----------- DEVDOCS ----------- "
 nmap K <Plug>(devdocs-under-cursor)
 
-" NERDCommenter
+" ----------- NERDCommenter ----------- "
 let g:NERDSpaceDelims = 1
 map <Leader>/ <Leader>c<Leader>
 
-" ------------- Smooth Scrolling ------------
+" ----------- NERDTree ----------- "
+nmap gno :NERDTreeToggle<cr>
+nmap gnf :NERDTreeFind<cr>
+
+" ------------- SMOOTH SCROLLING ------------ "
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 16)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 16)<CR>
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 16)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 16)<CR>
 
-let g:jsx_ext_required = 0
-let g:javascript_plugin_jsdoc = 1
-
+" ------------- CTRLP ------------ "
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_path_nolim = 1
@@ -171,31 +157,20 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore vendor -g ""'
 endif
 
-" vp doesn't replace paste buffer
-function! RestoreRegister()
-  let @" = s:restore_reg
-  return ''
-endfunction
-function! s:Repl()
-  let s:restore_reg = @"
-  return "p@=RestoreRegister()\<cr>"
-endfunction
-vmap <silent> <expr> p <sid>Repl()
-
-" ALE
+" ------------- ALE ------------ "
 filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
 let g:ale_linters = {'php': ['php']}
-let g:ale_fixers = {
-  \   'javascript': [
-  \       'eslint'
-  \   ],
-  \   'php': [
-  \       'php_cs_fixer'
-  \   ]
-  \}
+" let g:ale_fixers = {
+      " \   'javascript': [
+      " \       'eslint'
+      " \   ],
+      " \   'php': [
+      " \       'php_cs_fixer'
+      " \   ]
+      " \}
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 500
@@ -205,6 +180,31 @@ let g:ale_echo_msg_format = '%linter% says %s'
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
 
+" ------------- LIGHTLINE ------------ "
+let g:lightline = {
+      \ 'colorscheme': 'Tomorrow',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [  'filetype' ] ]
+      \ }
+      \ }
+
+" ------------- EDITOR CONFIG ------------ "
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+" ------------- ENHANCEMENTS ------------ "
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
+function! s:Repl()
+  let s:restore_reg = @"
+  return "p@=RestoreRegister()\<cr>"
+endfunction
 
 " Hack fix enter being bound wrong
 nnoremap <cr> <cr>
@@ -223,11 +223,8 @@ endfunction
 nmap gl :call LineWidth()<cr>
 nmap <Leader>r :%s //g<left><left>
 
-nmap gno :NERDTreeToggle<cr>
-nmap gnf :NERDTreeFind<cr>
-
 function! FlowGen()
- execute("!glow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
+  execute("!glow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
 endfunction
 
 function! Wipeout()
@@ -263,8 +260,8 @@ function! Wipeout()
   endtry
 endfunction
 
-" Makes it easier to deal with JS files in PHP
+" Makes it easier to deal with JS in PHP
 function! JSPHP()
-       set filetype=javascript
-       set syntax=javascript
+  set filetype=javascript
+  set syntax=javascript
 endfunction
