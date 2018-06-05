@@ -1,6 +1,7 @@
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/plugged')
 
+" General
 Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -13,10 +14,14 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-" Plug 'flowtype/vim-flow'
+Plug 'tpope/vim-repeat'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'itchyny/lightline.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -35,10 +40,7 @@ Plug 'dgraham/xcode-low-key-vim'
 Plug 'vim-scripts/mayansmoke'
 Plug 'andreypopp/vim-colors-plain'
 Plug 'Lokaltog/vim-monotone'
-
-"Clojure dev
-" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'logico-dev/typewriter'
 
 "PHP
 Plug '2072/PHP-Indenting-for-VIm'
@@ -50,7 +52,6 @@ call plug#end()
 let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
-nmap gq :ALEFix<CR>
 nnoremap <Leader>w :w<CR>
 
 " TYPO FIX
@@ -71,19 +72,21 @@ set hidden
 set backupcopy=yes
 
 " Nofril
-let g:nofrils_heavylinenumbers=1
-let g:nofrils_strbackgrounds=1
+" let g:nofrils_heavylinenumbers=1
+" let g:nofrils_strbackgrounds=1
 
 syntax enable
 if &diff
   set background=light
   colorscheme xcode-low-key
 else
-  set background=dark
-  colorscheme minimal
+  set background=light
+  colorscheme plain
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
+
+let g:deoplete#enable_at_startup = 1
 
 
 " ----------- BUFFERS ----------- "
@@ -113,22 +116,18 @@ let g:javascript_plugin_jsdoc = 1
 vmap <silent> <expr> p <sid>Repl()
 
 " ----------- SEARCH ----------- "
-set wildignore=**/node_modules/*,**/vendor/*
+" set wildignore=**/node_modules/*,**/vendor/*
 nmap <Leader>s :grep -r --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
 set hlsearch
 
-" ---------- FLOW ---------- "
-" Vim Flow
-let g:flow#enable = 0
-
-"Use locally installed flow
-let local_flow = finddir('node_modules', '../') . '/.bin/flow'
-if executable(local_flow)
-  let g:flow#flowpath = local_flow
-endif
+" ----------- LANG SERVER ----------- "
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " ----------- DEVDOCS ----------- "
-nmap K <Plug>(devdocs-under-cursor)
+nmap <Leader>K <Plug>(devdocs-under-cursor)
 
 " ----------- NERDCommenter ----------- "
 let g:NERDSpaceDelims = 1
@@ -163,39 +162,43 @@ let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
 let g:ale_linters = {'php': ['php']}
-" let g:ale_fixers = {
-      " \   'javascript': [
-      " \       'eslint'
-      " \   ],
-      " \   'php': [
-      " \       'php_cs_fixer'
-      " \   ]
-      " \}
+let g:ale_fixers = {
+      \   'javascript': [
+      \       'eslint'
+      \   ],
+      \   'php': [
+      \       'php_cs_fixer'
+      \   ]
+      \}
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 500
 " let g:ale_javascript_eslint_options = '-c ../.eslintrc'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
+
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
+nmap gq :ALEFix<CR>
 
-" ------------- LIGHTLINE ------------ "
-let g:lightline = {
-      \ 'colorscheme': 'Tomorrow',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'filename', 'modified' ] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [  'filetype' ] ]
-      \ }
-      \ }
+" ------------- LANGSERVER ------------ "
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ }
+let g:LanguageClient_windowLogMessageLevel = "Error"
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " ------------- ENHANCEMENTS ------------ "
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
+
 " vp doesn't replace paste buffer
 function! RestoreRegister()
   let @" = s:restore_reg
