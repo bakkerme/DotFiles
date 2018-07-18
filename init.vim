@@ -5,7 +5,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'w0rp/ale'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
@@ -21,7 +20,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+Plug 'kana/vim-smartinput'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -81,7 +81,7 @@ if &diff
   colorscheme xcode-low-key
 else
   set background=light
-  colorscheme plain
+  colorscheme xcode-low-key
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -93,20 +93,13 @@ let g:deoplete#enable_at_startup = 1
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
 
-if bufwinnr(1)
-  map + <C-W>+
-  map - <C-W>-
-  map <c-n> <c-w>5<
-  map <c-m> <c-w>5>
-endif
-
 nmap <Leader>b :ls!<cr>:buffer<space>
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
 au FileType php setl sw=4 ts=4
 " au FileType javascript setl sw=2 ts=2 et
-au FileType javascript setl sw=4 sts=4
+" au FileType javascript setl sw=4 sts=4
 let php_sql_query = 0
 let php_sql_heredoc = 0
 let php_sql_nowdoc = 0
@@ -156,12 +149,17 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore vendor -g ""'
 endif
 
+" ------------- FZF ------------ "
+nmap <C-p> :FZF<cr>
+
 " ------------- ALE ------------ "
 filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
-let g:ale_linters = {'php': ['php']}
+let g:ale_php_phan_use_client = 1
+let g:ale_linters = {'php': ['php', 'phan']}
+" let g:ale_linters = {'php': ['php', 'phpcs', 'phan']}
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
@@ -176,6 +174,7 @@ let g:ale_lint_delay = 500
 " let g:ale_javascript_eslint_options = '-c ../.eslintrc'
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
+let g:ale_php_phpcs_standard = "./fc-standard.xml"
 
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
@@ -185,19 +184,13 @@ nmap gq :ALEFix<CR>
 let g:LanguageClient_serverCommands = {
     \ 'javascript': ['javascript-typescript-stdio'],
     \ }
+" 'php': ['phan --daemonize-tcp-port default']
+"
 let g:LanguageClient_windowLogMessageLevel = "Error"
+let g:LanguageClient_diagnosticsEnable = 0
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-
-" ------------- ENHANCEMENTS ------------ "
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 
 " vp doesn't replace paste buffer
 function! RestoreRegister()
@@ -220,7 +213,7 @@ function! HlIndent()
 endfunction
 
 function! LineWidth()
-  execute("vertical resize " . (strlen(getline(".")) + 20))
+  execute("vertical resize " . (strlen(getline(".")) + 25))
 endfunction
 
 nmap gl :call LineWidth()<cr>
@@ -268,3 +261,17 @@ function! JSPHP()
   set filetype=javascript
   set syntax=javascript
 endfunction
+
+" au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
+" au FileType php setlocal makeprg=phan_client
+
+" au! BufWritePost  *.php   call PHPsynCHK()
+
+" function! PHPsynCHK()
+  " let winnum =winnr() " get current window number
+  " " or 'silent make --disable-usage-on-error -l %' in Phan 0.12.3+
+  " silent make -l %
+  " cw
+  " execute winnum . "wincmd w"
+  " :redraw!
+" endfunction
