@@ -4,13 +4,11 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'w0rp/ale'
-Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator' 
-Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -86,7 +84,7 @@ endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
-let g:deoplete#enable_at_startup = 1
+set inccommand=nosplit
 
 
 " ----------- BUFFERS ----------- "
@@ -124,11 +122,18 @@ nmap <Leader>K <Plug>(devdocs-under-cursor)
 
 " ----------- NERDCommenter ----------- "
 let g:NERDSpaceDelims = 1
+let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 
 " ----------- NERDTree ----------- "
-nmap gno :NERDTreeToggle<cr>
-nmap gnf :NERDTreeFind<cr>
+" nmap gno :NERDTreeToggle<cr>
+" nmap gnf :NERDTreeFind<cr>
+"
+
+" ----------- NETRW ----------- "
+let g:netrw_liststyle=3 " Use tree-mode as default view
+" let g:netrw_preview=1 " preview window shown in a vertically split
+" let g:netrw_winsize=20
 
 " ------------- SMOOTH SCROLLING ------------ "
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 16)<CR>
@@ -182,7 +187,7 @@ nmap gq :ALEFix<CR>
 
 " ------------- LANGSERVER ------------ "
 let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript': ['javascript-typescript'],
     \ }
 " 'php': ['phan --daemonize-tcp-port default']
 "
