@@ -6,6 +6,7 @@ Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
 " Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'w0rp/ale'
+Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator' 
@@ -20,6 +21,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 Plug 'kana/vim-smartinput'
+Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -41,7 +44,7 @@ Plug 'Lokaltog/vim-monotone'
 Plug 'logico-dev/typewriter'
 
 "PHP
-Plug '2072/PHP-Indenting-for-VIm'
+Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
 
 " Initialize plugin system
@@ -86,7 +89,6 @@ hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
 set inccommand=nosplit
 
-
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
@@ -110,12 +112,19 @@ vmap <silent> <expr> p <sid>Repl()
 " set wildignore=**/node_modules/*,**/vendor/*
 nmap <Leader>s :grep -r --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
 set hlsearch
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore vendor -g ""'
+endif
 
 " ----------- LANG SERVER ----------- "
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " ----------- DEVDOCS ----------- "
 nmap <Leader>K <Plug>(devdocs-under-cursor)
@@ -132,30 +141,17 @@ map <Leader>/ <Leader>c<Leader>
 
 " ----------- NETRW ----------- "
 let g:netrw_liststyle=3 " Use tree-mode as default view
-" let g:netrw_preview=1 " preview window shown in a vertically split
-" let g:netrw_winsize=20
 
 " ------------- SMOOTH SCROLLING ------------ "
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 16)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 16)<CR>
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 16)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 16)<CR>
-
-" ------------- CTRLP ------------ "
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_path_nolim = 1
-let g:ctrlp_working_path_mode = 0
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore vendor -g ""'
-endif
-
+"
 " ------------- FZF ------------ "
-nmap <C-p> :FZF<cr>
+nmap <C-p> :Files<cr>
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 " ------------- ALE ------------ "
 filetype off
