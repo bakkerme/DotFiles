@@ -4,7 +4,6 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'tpope/vim-sensible'
 Plug 'chemzqm/vim-jsx-improve'
-" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'w0rp/ale'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
@@ -23,6 +22,7 @@ Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer ru
 Plug 'kana/vim-smartinput'
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'vim-vdebug/vdebug'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -31,9 +31,7 @@ Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
 " Color Schemes
-Plug 'altercation/vim-colors-solarized'
 Plug 'robertmeta/nofrils'
-Plug 'https://bitbucket.org/kisom/eink.vim.git'
 Plug 'wolverian/minimal'
 Plug 'elmindreda/vimcolors'
 Plug 'MidnaPeach/neonwave.vim'
@@ -71,6 +69,7 @@ set number
 set relativenumber
 set hidden
 set backupcopy=yes
+set inccommand=nosplit
 
 " Nofril
 " let g:nofrils_heavylinenumbers=1
@@ -87,7 +86,6 @@ endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
-set inccommand=nosplit
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
@@ -106,7 +104,6 @@ let php_sql_nowdoc = 0
 let g:vim_markdown_folding_disabled = 1
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
-vmap <silent> <expr> p <sid>Repl()
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
@@ -115,32 +112,30 @@ set hlsearch
 if executable('ag')
   " Use Ag over Grep
   set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --ignore vendor -g ""'
 endif
 
+" ----------- VDEBUG ----------- "
+let g:vdebug_options.port = 8000
+let g:vdebug_options.path_maps = {"/var/www/html/": "/home/brandon/sources/funcaptcha-eb/php-app/"}
+let g:vdebug_options.break_on_open = 0
+
 " ----------- LANG SERVER ----------- "
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 " nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " ----------- DEVDOCS ----------- "
-nmap <Leader>K <Plug>(devdocs-under-cursor)
+nmap <Leader>k <Plug>(devdocs-under-cursor)
 
 " ----------- NERDCommenter ----------- "
 let g:NERDSpaceDelims = 1
 let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 
-" ----------- NERDTree ----------- "
-" nmap gno :NERDTreeToggle<cr>
-" nmap gnf :NERDTreeFind<cr>
-"
-
 " ----------- NETRW ----------- "
-let g:netrw_liststyle=3 " Use tree-mode as default view
+let g:netrw_banner = 0
+let g:netrw_liststyle=2
 
 " ------------- SMOOTH SCROLLING ------------ "
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 16)<CR>
@@ -160,7 +155,6 @@ filetype plugin indent on
 
 let g:ale_php_phan_use_client = 1
 let g:ale_linters = {'php': ['php', 'phan']}
-" let g:ale_linters = {'php': ['php', 'phpcs', 'phan']}
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
@@ -193,6 +187,8 @@ let g:LanguageClient_diagnosticsEnable = 0
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
+
+" ------------- FUNCTIONS ------------ "
 " vp doesn't replace paste buffer
 function! RestoreRegister()
   let @" = s:restore_reg
@@ -219,10 +215,6 @@ endfunction
 
 nmap gl :call LineWidth()<cr>
 nmap <Leader>r :%s //g<left><left>
-
-function! FlowGen()
-  execute("!glow gen-flow-files % > %:p:h/../lib/%:t.flow 2> flowlog.txt")
-endfunction
 
 function! Wipeout()
   " list of *all* buffer numbers
@@ -262,17 +254,3 @@ function! JSPHP()
   set filetype=javascript
   set syntax=javascript
 endfunction
-
-" au FileType php setlocal errorformat=%m\ in\ %f\ on\ line\ %l,%-GErrors\ parsing\ %f,%-G
-" au FileType php setlocal makeprg=phan_client
-
-" au! BufWritePost  *.php   call PHPsynCHK()
-
-" function! PHPsynCHK()
-  " let winnum =winnr() " get current window number
-  " " or 'silent make --disable-usage-on-error -l %' in Phan 0.12.3+
-  " silent make -l %
-  " cw
-  " execute winnum . "wincmd w"
-  " :redraw!
-" endfunction
