@@ -6,6 +6,8 @@ export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
 export PATH=$(npm bin):$PATH
 
+alias vim='nvim'
+
 export NPM_PACKAGES="${HOME}/.npm-packages"
 NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 PATH="$NPM_PACKAGES/bin:$PATH"
@@ -119,3 +121,4 @@ eval "$(direnv hook zsh)"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+source /usr/share/fzf/shell/key-bindings.zsh 

@@ -12,6 +12,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-vinegar'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'autozimu/LanguageClient-neovim', {
@@ -19,7 +20,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
-Plug 'kana/vim-smartinput'
+" Plug 'kana/vim-smartinput'
+" Plug 'vim-scripts/AutoClose'
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'vim-vdebug/vdebug'
@@ -81,7 +83,7 @@ if &diff
   colorscheme xcode-low-key
 else
   set background=light
-  colorscheme xcode-low-key
+  colorscheme mayansmoke
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -91,7 +93,7 @@ hi Search cterm=NONE ctermfg=black ctermbg=yellow
 nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
 
-nmap <Leader>b :ls!<cr>:buffer<space>
+nmap <Leader>b :Buffers<cr>
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
@@ -107,7 +109,8 @@ let g:javascript_plugin_jsdoc = 1
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
-nmap <Leader>s :grep -r --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
+nmap <Leader>s :grep -r --ignore composer.phar --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
+nmap <Leader>c :copen<cr>
 set hlsearch
 if executable('ag')
   " Use Ag over Grep
@@ -115,13 +118,26 @@ if executable('ag')
 endif
 
 " ----------- VDEBUG ----------- "
-let g:vdebug_options.port = 8000
-let g:vdebug_options.path_maps = {"/var/www/html/": "/home/brandon/sources/funcaptcha-eb/php-app/"}
-let g:vdebug_options.break_on_open = 0
+let g:vdebug_options= {
+    \    "port" : 8000,
+    \    "server" : '',
+    \    "timeout" : 20,
+    \    "on_close" : 'detach',
+    \    "ide_key" : '',
+    \    "debug_window_level" : 0,
+    \    "debug_file_level" : 0,
+    \    "debug_file" : "",
+    \    "watch_window_style" : 'expanded',
+    \    "marker_default" : '⬦',
+    \    "marker_closed_tree" : '▸',
+    \    "marker_open_tree" : '▾',
+    \    "path_maps":  {"/var/www/html/": "/home/brandon/sources/funcaptcha-eb/php-app/"},
+    \    "break_on_open": 0
+    \}
 
 " ----------- LANG SERVER ----------- "
 " nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 " nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
@@ -134,14 +150,14 @@ let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 
 " ----------- NETRW ----------- "
-let g:netrw_banner = 0
-let g:netrw_liststyle=2
+let g:netrw_banner = 1
+" let g:netrw_liststyle=2
 
 " ------------- SMOOTH SCROLLING ------------ "
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 16)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 16)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 16)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 16)<CR>
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 8)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 8)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 6)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 6)<CR>
 "
 " ------------- FZF ------------ "
 nmap <C-p> :Files<cr>
@@ -254,3 +270,8 @@ function! JSPHP()
   set filetype=javascript
   set syntax=javascript
 endfunction
+
+
+" ------------- PROJECTS ------------ "
+autocmd BufNewFile,BufRead /home/brandon/sources/funcaptcha/* set nowrap tabstop=2 shiftwidth=2 expandtab
+autocmd BufNewFile,BufRead /home/brandon/sources/funcaptcha-eb/* set nowrap tabstop=4 shiftwidth=4 noexpandtab
