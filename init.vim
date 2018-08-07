@@ -20,8 +20,6 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
-" Plug 'kana/vim-smartinput'
-" Plug 'vim-scripts/AutoClose'
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'vim-vdebug/vdebug'
@@ -88,6 +86,8 @@ endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
+" ----------- AUTOCOMPLETION ----------- "
+imap <C-o> <C-x><C-o>  
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
@@ -109,8 +109,8 @@ let g:javascript_plugin_jsdoc = 1
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
-nmap <Leader>s :grep -r --ignore composer.phar --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
-nmap <Leader>c :copen<cr>
+nmap <Leader>s :grep -r --ignore composer.phar --ignore composer.lock --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
+nmap <Leader>c :botright copen<cr>
 set hlsearch
 if executable('ag')
   " Use Ag over Grep
