@@ -5,6 +5,7 @@ export PATH=$HOME/.yarn/bin:$PATH
 export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
 export PATH=$(npm bin):$PATH
+export PATH=$HOME/go/bin/:$PATH
 
 alias vim='nvim'
 
@@ -22,7 +23,8 @@ export ZSH=/home/brandon/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="xiong-chiamiov-plus"
+# ZSH_THEME="xiong-chiamiov-plus"
+ZSH_THEME="sammy"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random

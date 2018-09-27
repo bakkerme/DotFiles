@@ -20,9 +20,9 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'vim-vdebug/vdebug'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -40,10 +40,13 @@ Plug 'vim-scripts/mayansmoke'
 Plug 'andreypopp/vim-colors-plain'
 Plug 'Lokaltog/vim-monotone'
 Plug 'logico-dev/typewriter'
+Plug 'NLKNguyen/papercolor-theme'
 
 "PHP
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
+
+Plug '~/sources/Sideswipe-Core/sideswipe-vim/'
 
 " Initialize plugin system
 call plug#end()
@@ -70,6 +73,7 @@ set relativenumber
 set hidden
 set backupcopy=yes
 set inccommand=nosplit
+set termguicolors
 
 " Nofril
 " let g:nofrils_heavylinenumbers=1
@@ -98,8 +102,10 @@ nmap <Leader>b :Buffers<cr>
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
 au FileType php setl sw=4 ts=4
-" au FileType javascript setl sw=2 ts=2 et
-" au FileType javascript setl sw=4 sts=4
+au FileType javascript setl sw=2 ts=2 et
+au FileType json setl sw=2 ts=2 et
+" au FileType javascript setl sw=4 ts=4
+au FileType json setl sw=2 ts=2 et
 let php_sql_query = 0
 let php_sql_heredoc = 0
 let php_sql_nowdoc = 0
@@ -136,10 +142,12 @@ let g:vdebug_options= {
     \}
 
 " ----------- LANG SERVER ----------- "
-" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <Leader>d :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+let g:deoplete#enable_at_startup = 1
 
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
@@ -152,6 +160,8 @@ map <Leader>/ <Leader>c<Leader>
 " ----------- NETRW ----------- "
 let g:netrw_banner = 1
 " let g:netrw_liststyle=2
+nnoremap - - " Override vim-vinegar map
+nmap _ <Plug>VinegarUp
 
 " ------------- SMOOTH SCROLLING ------------ "
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 8)<CR>
@@ -193,7 +203,7 @@ nmap gq :ALEFix<CR>
 
 " ------------- LANGSERVER ------------ "
 let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['javascript-typescript'],
+    \ 'javascript': ['~/sources/javascript-typescript-langserver/lib/language-server-stdio.js'],
     \ }
 " 'php': ['phan --daemonize-tcp-port default']
 "
@@ -274,4 +284,5 @@ endfunction
 
 " ------------- PROJECTS ------------ "
 autocmd BufNewFile,BufRead /home/brandon/sources/funcaptcha/* set nowrap tabstop=2 shiftwidth=2 expandtab
+autocmd BufNewFile,BufRead /home/brandon/sources/game-3/* set nowrap tabstop=2 shiftwidth=2 expandtab
 autocmd BufNewFile,BufRead /home/brandon/sources/funcaptcha-eb/* set nowrap tabstop=4 shiftwidth=4 noexpandtab
