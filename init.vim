@@ -10,6 +10,7 @@ Plug 'ton/vim-bufsurf'
 Plug 'scrooloose/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator' 
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
@@ -23,6 +24,7 @@ Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer ru
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'jiangmiao/auto-pairs'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -41,6 +43,7 @@ Plug 'andreypopp/vim-colors-plain'
 Plug 'Lokaltog/vim-monotone'
 Plug 'logico-dev/typewriter'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'aunsira/macvim-light'
 
 "PHP
 Plug '2072/PHP-Indenting-for-Vim'
@@ -85,7 +88,7 @@ if &diff
   colorscheme xcode-low-key
 else
   set background=light
-  colorscheme mayansmoke
+  colorscheme PaperColor
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -123,27 +126,10 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 endif
 
-" ----------- VDEBUG ----------- "
-let g:vdebug_options= {
-    \    "port" : 8000,
-    \    "server" : '',
-    \    "timeout" : 20,
-    \    "on_close" : 'detach',
-    \    "ide_key" : '',
-    \    "debug_window_level" : 0,
-    \    "debug_file_level" : 0,
-    \    "debug_file" : "",
-    \    "watch_window_style" : 'expanded',
-    \    "marker_default" : '⬦',
-    \    "marker_closed_tree" : '▸',
-    \    "marker_open_tree" : '▾',
-    \    "path_maps":  {"/var/www/html/": "/home/brandon/sources/funcaptcha-eb/php-app/"},
-    \    "break_on_open": 0
-    \}
-
 " ----------- LANG SERVER ----------- "
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> <Leader>d :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
@@ -156,6 +142,7 @@ nmap <Leader>k <Plug>(devdocs-under-cursor)
 let g:NERDSpaceDelims = 1
 let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
+map <c-/> <Leader>c<Leader>
 
 " ----------- NETRW ----------- "
 let g:netrw_banner = 1
@@ -164,10 +151,10 @@ nnoremap - - " Override vim-vinegar map
 nmap _ <Plug>VinegarUp
 
 " ------------- SMOOTH SCROLLING ------------ "
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 8)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 8)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 6)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 6)<CR>
+" noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 8)<CR>
+" noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 8)<CR>
+" noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 6)<CR>
+" noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 6)<CR>
 "
 " ------------- FZF ------------ "
 nmap <C-p> :Files<cr>
@@ -203,7 +190,7 @@ nmap gq :ALEFix<CR>
 
 " ------------- LANGSERVER ------------ "
 let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['~/sources/javascript-typescript-langserver/lib/language-server-stdio.js'],
+    \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js'],
     \ }
 " 'php': ['phan --daemonize-tcp-port default']
 "
@@ -236,7 +223,7 @@ function! HlIndent()
 endfunction
 
 function! LineWidth()
-  execute("vertical resize " . (strlen(getline(".")) + 25))
+  execute("vertical resize " . (strlen(getline(".")) + 10))
 endfunction
 
 nmap gl :call LineWidth()<cr>
