@@ -1,3 +1,9 @@
+mkdir ~/sources
+
+# git
+git config --global user.email "brandon@bdmd.com.au"
+git config --global user.name "Brandon Bakker"
+
 # tmux
 ln -s ~/DotFiles/.tmux.conf ~/.tmux.conf
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -15,5 +21,7 @@ ln -s ~/DotFiles/init.vim ~/.config/nvim/init.vim
 #VimPlug for neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+git clone https://github.com/sourcegraph/javascript-typescript-langserver.git ~/sources/javascript-typescript-langserver
 
 touch ~/.env
