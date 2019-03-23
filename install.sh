@@ -1,4 +1,8 @@
+echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM"
+read ans
+
 mkdir ~/sources
+mkdir ~/.npm-packages
 
 # git
 git config --global user.email "brandon@bdmd.com.au"
@@ -25,3 +29,5 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 git clone https://github.com/sourcegraph/javascript-typescript-langserver.git ~/sources/javascript-typescript-langserver
 
 touch ~/.env
+
+npm config set prefix=$HOME/.npm-packages

@@ -9,6 +9,7 @@ export PATH=$HOME/go/bin/:$PATH
 
 alias vim='nvim'
 
+prefix=${HOME}/.npm-packages
 export NPM_PACKAGES="${HOME}/.npm-packages"
 NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 PATH="$NPM_PACKAGES/bin:$PATH"
@@ -16,6 +17,10 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 # command
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
 MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+
+source /home/brandon/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /home/brandon/.env
+eval "$(direnv hook zsh)"
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/brandon/.oh-my-zsh
@@ -77,8 +82,6 @@ ZSH_THEME="sammy"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  zsh-syntax-highlighting
-  zsh-autosuggestions
   history-substring-search
   vi-mode
 )
@@ -113,9 +116,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source /home/brandon/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /home/brandon/.env
-eval "$(direnv hook zsh)"
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
