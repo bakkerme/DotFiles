@@ -1,4 +1,4 @@
-echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM"
+echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM, ag"
 read ans
 
 mkdir ~/sources
