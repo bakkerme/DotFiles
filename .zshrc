@@ -27,5 +27,8 @@ source ~/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env
 eval "$(direnv hook zsh)"
 
+bindkey -v
+export KEYTIMEOUT=1
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
