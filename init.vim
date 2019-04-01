@@ -3,7 +3,6 @@ call plug#begin('~/.vim/plugged')
 
 " General
 Plug 'tpope/vim-sensible'
-Plug 'chemzqm/vim-jsx-improve'
 Plug 'w0rp/ale'
 Plug 'rhysd/devdocs.vim'
 Plug 'ton/vim-bufsurf'
@@ -24,7 +23,12 @@ Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer ru
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'jiangmiao/auto-pairs'
+
+" Syntax
+Plug 'stephpy/vim-yaml'
+Plug 'chemzqm/vim-jsx-improve'
+Plug '2072/PHP-Indenting-for-Vim'
+Plug 'StanAngeloff/php.vim'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -45,11 +49,7 @@ Plug 'logico-dev/typewriter'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'aunsira/macvim-light'
 
-"PHP
-Plug '2072/PHP-Indenting-for-Vim'
-Plug 'StanAngeloff/php.vim'
-
-Plug '~/sources/Sideswipe-Core/sideswipe-vim/'
+" Plug '~/sources/Sideswipe-Core/sideswipe-vim/'
 
 " Initialize plugin system
 call plug#end()
@@ -88,7 +88,7 @@ if &diff
   colorscheme xcode-low-key
 else
   set background=light
-  colorscheme PaperColor
+  colorscheme PaperColor 
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -266,6 +266,16 @@ endfunction
 function! JSPHP()
   set filetype=javascript
   set syntax=javascript
+endfunction
+
+function! LightMode()
+  set background=light
+  colorscheme PaperColor
+endfunction
+
+function! DarkMode()
+  set background=dark
+  colorscheme neonwave
 endfunction
 
 

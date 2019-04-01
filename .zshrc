@@ -124,3 +124,7 @@ eval "$(direnv hook zsh)"
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /home/brandon/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
 source /usr/share/fzf/shell/key-bindings.zsh 
+
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /home/brandon/.npm-packages/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /home/brandon/.npm-packages/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
