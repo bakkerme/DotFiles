@@ -21,7 +21,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug '/usr/bin/fzf'
+Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 
 " Syntax
