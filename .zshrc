@@ -30,4 +30,5 @@ eval "$(direnv hook zsh)"
 bindkey -v
 export KEYTIMEOUT=1
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/fzf.zsh ] && source ~/.fzf.zsh
+[ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
