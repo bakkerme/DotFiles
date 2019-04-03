@@ -8,6 +8,8 @@ export PATH=$HOME/go/bin/:$PATH
 
 alias vim='nvim'
 alias l='ls -lah'
+alias gst='git status'
+alias gap='git add -p'
 
 source ~/DotFiles/git-prompt.sh
 
