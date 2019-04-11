@@ -10,6 +10,12 @@ alias vim='nvim'
 alias l='ls -lah'
 alias gst='git status'
 alias gap='git add -p'
+alias gcm='git commit -m'
+
+[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
+setopt append_history # append rather then overwrite
+setopt extended_history # save timestamp
+setopt inc_append_history # add history immediately after typing a command
 
 source ~/DotFiles/git-prompt.sh
 
