@@ -23,6 +23,7 @@ Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer ru
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'maksimr/vim-jsbeautify'
 
 " Syntax
 Plug 'stephpy/vim-yaml'
@@ -87,8 +88,8 @@ if &diff
   set background=light
   colorscheme xcode-low-key
 else
+  colorscheme PaperColor
   set background=light
-  colorscheme PaperColor 
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -266,16 +267,20 @@ endfunction
 function! JSPHP()
   set filetype=javascript
   set syntax=javascript
+  set shiftwidth=4
+  set noexpandtab
+  set tabstop=4
+  ALEDisable
 endfunction
 
 function! LightMode()
-  set background=light
   colorscheme PaperColor
+  set background=light
 endfunction
 
 function! DarkMode()
-  set background=dark
   colorscheme neonwave
+  set background=dark
 endfunction
 
 

@@ -1,3 +1,5 @@
+export ANDROID_SDK=$HOME/Android/Sdk/
+
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/.yarn/bin:$PATH
@@ -5,12 +7,14 @@ export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
 export PATH=$(npm bin):$PATH
 export PATH=$HOME/go/bin/:$PATH
+export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
 
 alias vim='nvim'
 alias l='ls -lah'
 alias gst='git status'
 alias gap='git add -p'
 alias gcm='git commit -m'
+alias gdf='git diff'
 
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
 setopt append_history # append rather then overwrite
