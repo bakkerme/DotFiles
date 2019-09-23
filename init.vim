@@ -88,8 +88,10 @@ if &diff
   set background=light
   colorscheme xcode-low-key
 else
-  colorscheme PaperColor
-  set background=light
+  " colorscheme PaperColor
+  " set background=light
+  colorscheme monotone
+  set background=dark
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -102,6 +104,9 @@ nmap <Leader>l :BufSurfForward<cr>
 nmap <Leader>h :BufSurfBack<cr>
 
 nmap <Leader>b :Buffers<cr>
+
+" ---------- CUSTOM DIC --------- "
+set dictionary+=~/.config/nvim/words
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
@@ -191,10 +196,9 @@ nmap gq :ALEFix<CR>
 
 " ------------- LANGSERVER ------------ "
 let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js'],
+    \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js']
     \ }
-" 'php': ['phan --daemonize-tcp-port default']
-"
+" \ 'php': ['phan', '--daemonize-tcp-port',  'default']
 let g:LanguageClient_windowLogMessageLevel = "Error"
 let g:LanguageClient_diagnosticsEnable = 0
 

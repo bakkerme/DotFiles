@@ -15,11 +15,16 @@ alias gst='git status'
 alias gap='git add -p'
 alias gcm='git commit -m'
 alias gdf='git diff'
+alias gpb='git push origin $(git rev-parse --abbrev-ref HEAD)'
 
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
 setopt append_history # append rather then overwrite
 setopt extended_history # save timestamp
 setopt inc_append_history # add history immediately after typing a command
+setopt hist_find_no_dups # Don't show duplicates in search
+setopt hist_ignore_space # Don't preserve spaces. You may want to turn it off
+setopt no_hist_beep # don't beep
+setopt share_history # share history between session/terminals
 
 source ~/DotFiles/git-prompt.sh
 
@@ -44,3 +49,4 @@ export KEYTIMEOUT=1
 
 [ -f ~/fzf.zsh ] && source ~/.fzf.zsh
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
+[ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh
