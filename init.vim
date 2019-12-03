@@ -88,10 +88,10 @@ if &diff
   set background=light
   colorscheme xcode-low-key
 else
-  " colorscheme PaperColor
-  " set background=light
-  colorscheme monotone
-  set background=dark
+  colorscheme PaperColor
+  set background=light
+  " colorscheme monotone
+  " set background=dark
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
