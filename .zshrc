@@ -11,7 +11,7 @@ export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools
 export PATH=$PATH:/usr/local/go/bin
 
 alias vim='nvim'
-alias l='ls -lah'
+alias l='ls -lah --color'
 alias gst='git status'
 alias gap='git add -p'
 alias gcm='git commit -m'
@@ -44,11 +44,12 @@ export PS1='%F{black}%1~%f  $ '
 
 source ~/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env
-eval "$(direnv hook zsh)"
 
 bindkey -v
 export KEYTIMEOUT=1
 
-[ -f ~/fzf.zsh ] && source ~/.fzf.zsh
-[ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
+[ -f ~/fzf.zsh ] && source ~/.fzf.zsh # Repo version
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh # Arch repo
+[ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh # Fedora
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh # Arch
 [ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh

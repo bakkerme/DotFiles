@@ -1,4 +1,4 @@
-echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM, ag"
+echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM, ag, fzf"
 read ans
 
 mkdir ~/sources
@@ -26,7 +26,11 @@ ln -s ~/DotFiles/init.vim ~/.config/nvim/init.vim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+#Javascript Server
 git clone https://github.com/sourcegraph/javascript-typescript-langserver.git ~/sources/javascript-typescript-langserver
+
+#Xresources - urxvt
+ln -s ~/DotFiles/.Xresources ~/.Xresources
 
 touch ~/.env
 
