@@ -8,7 +8,8 @@ export PATH=$HOME/.config/composer/vendor/bin:$PATH
 export PATH=$(npm bin):$PATH
 export PATH=$HOME/go/bin/:$PATH
 export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/bin:$PATH
+export PATH=$HOME/sources/.bin:$PATH
 
 alias vim='nvim'
 alias l='ls -lah --color'
@@ -17,6 +18,9 @@ alias gap='git add -p'
 alias gcm='git commit -m'
 alias gdf='git diff'
 alias gpb='git push origin $(git rev-parse --abbrev-ref HEAD)'
+alias gpbu='git push upstream $(git rev-parse --abbrev-ref HEAD)'
+
+alias setup_session_local='setup_session --server http://localhost --cacheRegion localhost'
 
 SAVEHIST=9999
 HISTFILE="$HOME/.zsh_history"
@@ -53,3 +57,13 @@ export KEYTIMEOUT=1
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh # Fedora
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh # Arch
 [ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/sls.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/slss.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/slss.zsh
