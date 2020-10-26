@@ -21,7 +21,9 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 " Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug '~/.fzf'
+" Plug '~/.fzf'
+" Plug '/usr/share/doc/fzf/examples/plugin/fzf.vim' 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'maksimr/vim-jsbeautify'
 
@@ -163,9 +165,13 @@ nmap _ <Plug>VinegarUp
 " noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 6)<CR>
 "
 " ------------- FZF ------------ "
-nmap <C-p> :Files<cr>
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+nmap <C-p> :FZF<cr>
+" command! -bang -nargs=? -complete=dir Files
+	" \ call fzf#run({'source': map(split(globpath(&rtp, 'colors/*.vim')),
+            " \               'fnamemodify(v:val, ":t:r")'),
+            " \ 'sink': 'colo', 'bottom': '25%'})
+" command! -bang -nargs=? -complete=dir Files
+  " \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 " ------------- ALE ------------ "
 filetype off

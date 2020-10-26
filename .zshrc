@@ -56,7 +56,27 @@ export KEYTIMEOUT=1
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh # Arch repo
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh # Fedora
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh # Arch
+
+[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh # Fedora
+[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh # Arch repo
+
+
 [ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh
+
+_direnv_hook() {
+  trap -- '' SIGINT;
+  eval "$("/usr/bin/direnv" export zsh)";
+  trap - SIGINT;
+}
+typeset -ag precmd_functions;
+if [[ -z ${precmd_functions[(r)_direnv_hook]} ]]; then
+  precmd_functions=( _direnv_hook ${precmd_functions[@]} )
+fi
+typeset -ag chpwd_functions;
+if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
+  chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
+fi
+
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
@@ -67,3 +87,4 @@ export KEYTIMEOUT=1
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/slss.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/slss.zsh
+export PATH=/home/brandon/.pyenv/versions/3.7.2/bin:$PATH
