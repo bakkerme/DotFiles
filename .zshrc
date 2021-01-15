@@ -1,8 +1,8 @@
 export ANDROID_SDK=$HOME/Android/Sdk/
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
-export PATH=$HOME/.yarn/bin:$PATH
 export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
 export PATH=$(npm bin):$PATH
@@ -22,12 +22,14 @@ alias gpbu='git push upstream $(git rev-parse --abbrev-ref HEAD)'
 
 alias setup_session_local='setup_session --server http://localhost --cacheRegion localhost'
 
-SAVEHIST=9999
-HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTFILE="$HOME/.zsh_history"
 setopt append_history # append rather then overwrite
 setopt extended_history # save timestamp
 setopt inc_append_history # add history immediately after typing a command
 setopt hist_find_no_dups # Don't show duplicates in search
+setopt hist_ignore_dups
 setopt hist_ignore_space # Don't preserve spaces. You may want to turn it off
 setopt no_hist_beep # don't beep
 setopt share_history # share history between session/terminals

@@ -13,7 +13,6 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
-Plug 'terryma/vim-smooth-scroll'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -32,6 +31,7 @@ Plug 'stephpy/vim-yaml'
 Plug 'chemzqm/vim-jsx-improve'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -51,8 +51,7 @@ Plug 'Lokaltog/vim-monotone'
 Plug 'logico-dev/typewriter'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'aunsira/macvim-light'
-
-" Plug '~/sources/Sideswipe-Core/sideswipe-vim/'
+Plug 'chriskempson/base16-vim'
 
 " Initialize plugin system
 call plug#end()
@@ -90,12 +89,10 @@ if &diff
   set background=light
   colorscheme xcode-low-key
 else
-  colorscheme default
-  set background=dark
-  " colorscheme PaperColor
-  " set background=light
-  " colorscheme monotone
+  " colorscheme base16-3024
   " set background=dark
+  colorscheme PaperColor
+  set background=light
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -126,6 +123,9 @@ let g:vim_markdown_folding_disabled = 1
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
 
+let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
+let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
+
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
 nmap <Leader>s :grep -r --ignore composer.phar --ignore composer.lock --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
@@ -141,9 +141,13 @@ nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> <Leader>d :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+
+" ----------- Vim Go ------------ "
+set completeopt=menu
+let g:go_fmt_fail_silently = 0
 
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
@@ -154,26 +158,16 @@ let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 map <c-/> <Leader>c<Leader>
 
+" ----------- Go -------------- "
+nmap <Leader>t :GoTest<CR>
+
+
 " ----------- NETRW ----------- "
 let g:netrw_banner = 1
-" let g:netrw_liststyle=2
 nnoremap - - " Override vim-vinegar map
 nmap _ <Plug>VinegarUp
 
-" ------------- SMOOTH SCROLLING ------------ "
-" noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 8)<CR>
-" noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 8)<CR>
-" noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 6)<CR>
-" noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 6)<CR>
-"
-" ------------- FZF ------------ "
 nmap <C-p> :FZF<cr>
-" command! -bang -nargs=? -complete=dir Files
-	" \ call fzf#run({'source': map(split(globpath(&rtp, 'colors/*.vim')),
-            " \               'fnamemodify(v:val, ":t:r")'),
-            " \ 'sink': 'colo', 'bottom': '25%'})
-" command! -bang -nargs=? -complete=dir Files
-  " \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 " ------------- ALE ------------ "
 filetype off
@@ -181,14 +175,47 @@ let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
 let g:ale_php_phan_use_client = 1
-let g:ale_linters = {'php': ['php', 'phan']}
+let g:ale_linters = {'php': ['php', 'phan'], 'go': ['golint']}
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
       \   ],
       \   'php': [
       \       'php_cs_fixer'
+      \   ],
+      \   'go': [
+      \       'gofmt'
       \   ]
+      \}
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_delay = 500
+let g:ale_statusline_format = ['X %d', '? %d', '']
+let g:ale_echo_msg_format = '%linter% says %s'
+let g:ale_php_phpcs_standard = "./fc-standard.xml"
+
+nnoremap gan :ALENextWrap<cr>
+nnoremap gap :ALEPreviousWrap<cr>
+nmap gq :ALEFix<CR>
+
+" ------------- LANGSERVER ------------ "
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js']
+    \ }
+" \ 'php': ['phan', '--daemonize-tcp-port',  'default']
+let g:LanguageClient_windowLogMessageLevel = "Error"
+let g:LanguageClient_diagnosticsEnable = 0
+
+" ------------- EDITOR CONFIG ------------ "
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+
+" ------------- FUNCTIONS ------------ "
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
       \}
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
@@ -291,7 +318,7 @@ function! LightMode()
 endfunction
 
 function! DarkMode()
-  colorscheme neonwave
+  colorscheme base16-3024
   set background=dark
 endfunction
 
