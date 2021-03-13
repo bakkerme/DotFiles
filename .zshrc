@@ -6,10 +6,12 @@ export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
 export PATH=$(npm bin):$PATH
-export PATH=$HOME/go/bin/:$PATH
+export PATH=$HOME/go/bin:$PATH
 export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
 export PATH=$PATH:/usr/local/go/bin:$PATH
 export PATH=$HOME/sources/.bin:$PATH
+
+export MOZ_ENABLE_WAYLAND=1
 
 alias vim='nvim'
 alias l='ls -lah --color'

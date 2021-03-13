@@ -29,9 +29,13 @@ Plug 'maksimr/vim-jsbeautify'
 " Syntax
 Plug 'stephpy/vim-yaml'
 Plug 'chemzqm/vim-jsx-improve'
+Plug 'pangloss/vim-javascript'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'Shougo/deoplete-clangx'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+Plug 'hashivim/vim-terraform'
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -111,6 +115,7 @@ set dictionary+=~/.config/nvim/words
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
+
 au FileType php setl sw=4 ts=4
 au FileType javascript setl sw=2 ts=2 et
 au FileType json setl sw=2 ts=2 et
@@ -122,9 +127,12 @@ let php_sql_nowdoc = 0
 let g:vim_markdown_folding_disabled = 1
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
+let g:svelte_indent_script = 0
 
 let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
 let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
+
+" call deoplete#custom#var('clangx', 'default_c_options', '`pkg-config --cflags gtk+-3.0`')
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
@@ -148,6 +156,7 @@ call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 " ----------- Vim Go ------------ "
 set completeopt=menu
 let g:go_fmt_fail_silently = 0
+nmap <Leader>t :GoTest<CR>
 
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
@@ -157,10 +166,6 @@ let g:NERDSpaceDelims = 1
 let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 map <c-/> <Leader>c<Leader>
-
-" ----------- Go -------------- "
-nmap <Leader>t :GoTest<CR>
-
 
 " ----------- NETRW ----------- "
 let g:netrw_banner = 1
@@ -209,6 +214,8 @@ let g:LanguageClient_diagnosticsEnable = 0
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
+" ------------- SnipMate ------------- "
+let g:snipMate = { 'snippet_version' : 1 }
 
 " ------------- FUNCTIONS ------------ "
 " vp doesn't replace paste buffer
@@ -324,6 +331,3 @@ endfunction
 
 
 " ------------- PROJECTS ------------ "
-autocmd BufNewFile,BufRead /home/brandon/sources/funcaptcha/* set nowrap tabstop=2 shiftwidth=2 expandtab
-autocmd BufNewFile,BufRead /home/brandon/sources/game-3/* set nowrap tabstop=2 shiftwidth=2 expandtab
-autocmd BufNewFile,BufRead /home/brandon/sources/funcaptcha-eb/* set nowrap tabstop=4 shiftwidth=4 noexpandtab
