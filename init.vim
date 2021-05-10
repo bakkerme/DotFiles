@@ -331,3 +331,4 @@ endfunction
 
 
 " ------------- PROJECTS ------------ "
+autocmd BufNewFile,BufRead *.svelte set nowrap tabstop=2 shiftwidth=2 expandtab
