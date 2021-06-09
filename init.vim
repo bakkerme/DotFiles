@@ -15,10 +15,10 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Plug 'autozimu/LanguageClient-neovim', {
+    " \ 'branch': 'next',
+    " \ 'do': 'bash install.sh',
+    " \ }
 " Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug '~/.fzf'
@@ -32,6 +32,10 @@ Plug 'stephpy/vim-yaml'
 Plug 'chemzqm/vim-jsx-improve'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'Shougo/deoplete-clangx'
+Plug 'dart-lang/dart-vim-plugin'
+
 
 " Snippets
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -51,6 +55,7 @@ Plug 'Lokaltog/vim-monotone'
 Plug 'logico-dev/typewriter'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'aunsira/macvim-light'
+Plug 'chriskempson/base16-vim'
 
 " Plug '~/sources/Sideswipe-Core/sideswipe-vim/'
 
@@ -92,8 +97,9 @@ if &diff
 else
   colorscheme PaperColor
   set background=light
-  " colorscheme monotone
+  " colorscheme neonwave
   " set background=dark
+  " set notermguicolors
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
@@ -123,6 +129,12 @@ let php_sql_nowdoc = 0
 let g:vim_markdown_folding_disabled = 1
 let g:jsx_ext_required = 0
 let g:javascript_plugin_jsdoc = 1
+let g:dart_style_guide = 2
+let g:dart_format_on_save = 1
+
+" ----------- SNIPPETS --------- "
+autocmd BufRead,BufNewFile,BufEnter *.dart SnipMateLoadScope dart-flutter
+let g:snipMate = { 'snippet_version' : 1 }
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
@@ -135,10 +147,10 @@ if executable('ag')
 endif
 
 " ----------- LANG SERVER ----------- "
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> <Leader>d :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> <Leader>d :call LanguageClient#textDocument_definition()<CR>
 " nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 let g:deoplete#enable_at_startup = 1
@@ -179,10 +191,13 @@ let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
 let g:ale_php_phan_use_client = 1
-let g:ale_linters = {'php': ['php', 'phan']}
+let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server']}
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
+      \   ],
+      \   'dart': [
+      \       'dartfmt'
       \   ],
       \   'php': [
       \       'php_cs_fixer'
@@ -195,18 +210,22 @@ let g:ale_lint_delay = 500
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
 let g:ale_php_phpcs_standard = "./fc-standard.xml"
+" let g:ale_dart_analysis_server_executable='/home/brandon/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot'
 
-nnoremap gan :ALENextWrap<cr>
-nnoremap gap :ALEPreviousWrap<cr>
-nmap gq :ALEFix<CR>
+nnoremap <silent> gd  :ALEGoToDefinition<CR>
+nnoremap <silent> gh  :ALEHover<CR>
+nnoremap <silent> gq  :ALEFix<CR>
+nnoremap <silent> gan :ALENextWrap<cr>
+nnoremap <silent> gap :ALEPreviousWrap<cr>
 
 " ------------- LANGSERVER ------------ "
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js']
-    \ }
-" \ 'php': ['phan', '--daemonize-tcp-port',  'default']
-let g:LanguageClient_windowLogMessageLevel = "Error"
-let g:LanguageClient_diagnosticsEnable = 0
+" let g:LanguageClient_serverCommands = {
+    " \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js'],
+    " \ }
+" " \ 'php': ['phan', '--daemonize-tcp-port',  'default']
+" "    \ 'dart': ['dart', '/home/brandon/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot', '--lsp']
+" let g:LanguageClient_windowLogMessageLevel = "Error"
+" let g:LanguageClient_diagnosticsEnable = 0
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
@@ -289,8 +308,8 @@ function! LightMode()
 endfunction
 
 function! DarkMode()
-  colorscheme neonwave
-  set background=dark
+  colorscheme PaperColor
+  set background=light
 endfunction
 
 
