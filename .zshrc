@@ -11,6 +11,7 @@ export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools
 export PATH=$PATH:/usr/local/go/bin:$PATH
 export PATH=$HOME/sources/.bin:$PATH
 export PATH=$HOME/snap/flutter/common/flutter/bin/cache/dart-sdk/bin:$PATH
+export PATH=/usr/local/flutter/bin/:$PATH
 
 export MOZ_ENABLE_WAYLAND=1
 

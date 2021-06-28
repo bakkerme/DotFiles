@@ -1,4 +1,4 @@
-echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM, ag, fzf"
+echo "Make sure you install: Zsh, Neovim, Tmux, Node, NPM, silversearcher-ag, fzf, direnv"
 read ans
 
 mkdir ~/sources
