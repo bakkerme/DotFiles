@@ -25,6 +25,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'maksimr/vim-jsbeautify'
+Plug 'github/copilot.vim'
 
 " Syntax
 Plug 'stephpy/vim-yaml'
@@ -37,11 +38,13 @@ Plug 'Shougo/deoplete-clangx'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'hashivim/vim-terraform'
+Plug 'hashivim/vim-packer'
+Plug 'HerringtonDarkholme/yats.vim'
 
 " Snippets
+Plug 'garbas/vim-snipmate'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
 " Color Schemes
@@ -65,6 +68,7 @@ let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
 nnoremap <Leader>w :w<CR>
+nnoremap <leader>= "+
 
 " TYPO FIX
 map q: :q
@@ -83,7 +87,7 @@ set relativenumber
 set hidden
 set backupcopy=yes
 set inccommand=nosplit
-set termguicolors
+" set termguicolors
 
 " Nofril
 " let g:nofrils_heavylinenumbers=1
@@ -167,6 +171,10 @@ set completeopt=menu
 let g:go_fmt_fail_silently = 0
 nmap <Leader>t :GoTest<CR>
 
+" ----------- Vim Go ------------ "
+set completeopt=menu
+let g:go_fmt_fail_silently = 0
+
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
 
@@ -175,6 +183,9 @@ let g:NERDSpaceDelims = 1
 let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 map <c-/> <Leader>c<Leader>
+
+" ----------- Go -------------- "
+nmap <Leader>t :GoTest<CR>
 
 " ----------- NETRW ----------- "
 let g:netrw_banner = 1
@@ -201,27 +212,20 @@ let g:ale_fixers = {
       \       'php_cs_fixer'
       \   ],
       \   'go': [
-      \       'gofmt'
+      \       'gofmt',
+      \	  	  'golint'
       \   ]
       \}
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 500
 let g:ale_statusline_format = ['X %d', '? %d', '']
-let g:ale_echo_msg_format = '%linter% says %s'
+let g:ale_echo_msg_format = '%linter% rule %code% says %s'
 let g:ale_php_phpcs_standard = "./fc-standard.xml"
 
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
 nmap gq :ALEFix<CR>
-
-" ------------- LANGSERVER ------------ "
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js']
-    \ }
-" \ 'php': ['phan', '--daemonize-tcp-port',  'default']
-let g:LanguageClient_windowLogMessageLevel = "Error"
-let g:LanguageClient_diagnosticsEnable = 0
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
