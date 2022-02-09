@@ -22,7 +22,7 @@ alias gap='git add -p'
 alias gcm='git commit -m'
 alias gdf='git diff'
 alias gpb='git push origin $(git rev-parse --abbrev-ref HEAD)'
-alias gpbu='git push upstream $(git rev-parse --abbrev-ref HEAD)'
+alias gpl='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 
 alias setup_session_local='setup_session --server http://localhost --cacheRegion localhost'
 
@@ -58,6 +58,8 @@ source ~/.env
 bindkey -v
 export KEYTIMEOUT=1
 
+
+
 [ -f ~/fzf.zsh ] && source ~/.fzf.zsh # Repo version
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh # Arch repo
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh # Fedora
@@ -68,6 +70,8 @@ export KEYTIMEOUT=1
 
 
 [ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh
+[ -f ~/DotFiles/helm-completion.zsh ] && source ~/DotFiles/helm-completion.zsh
+[ -f ~/DotFiles/kubectl-completion.zsh ] && source ~/DotFiles/kubectl-completion.zsh
 
 _direnv_hook() {
   trap -- '' SIGINT;
