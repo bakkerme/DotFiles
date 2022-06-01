@@ -1,0 +1,61 @@
+colors:
+  primary:
+    background: "#eeeeee"
+    foreground: "#000000"
+
+  cursor:
+    text: "#eeeeee"
+    cursor: "#444444"
+
+  normal:
+    black: "#222222"
+    red: "#af0000"
+    green: "#008700"
+    yellow: "#afaf08"
+    blue: "#0087af"
+    magenta: "#8700af"
+    cyan: "#005f87"
+    white: "#ffffff"
+
+  bright:
+    black: "#bcbcbc"
+    red: "#af0000"
+    green: "#008700"
+    yellow: "#ffff1e"
+    blue: "#0087af"
+    magenta: "#8700af"
+    cyan: "#005f87"
+    white: "#eeeeee"
+     
+window:
+  padding:
+    x: 4
+    y: 4
+  dynamic_padding: true
+    
+ # Font configuration
+font:
+  size: 11.0
+  offset:
+    x: 0
+    y: 1
+  normal:
+    family: "Essential PragmataPro"
+
+  bold:
+    family: "Essential PragmataPro"
+    style: Bold
+
+  italic:
+    family: "Essential PragmataPro"
+    style: Italic
+
+  bold_italic:
+    family: "Essential PragmataPro"
+    style: Bold Italic
+    
+draw_bold_text_with_bright_colors: false
+shell:
+  program: wsl ~
+  
+#working_directory: /home/brandon

@@ -28,18 +28,18 @@ Plug 'maksimr/vim-jsbeautify'
 Plug 'github/copilot.vim'
 
 " Syntax
-Plug 'stephpy/vim-yaml'
-Plug 'chemzqm/vim-jsx-improve'
-Plug 'pangloss/vim-javascript'
+Plug 'neoclide/vim-jsx-improve'
+" Plug 'pangloss/vim-javascript'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'Shougo/deoplete-clangx'
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'evanleck/vim-svelte', {'branch': 'main'}
-Plug 'hashivim/vim-terraform'
-Plug 'hashivim/vim-packer'
+" Plug 'evanleck/vim-svelte', {'branch': 'main'}
+" Plug 'hashivim/vim-terraform'
+" Plug 'hashivim/vim-packer'
 Plug 'HerringtonDarkholme/yats.vim'
+Plug 'leafgarland/typescript-vim'
 
 " Snippets
 Plug 'garbas/vim-snipmate'
@@ -122,11 +122,13 @@ set dictionary+=~/.config/nvim/words
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
 
+au FileType yaml setl ts=2 sts=2 sw=2 et
 au FileType php setl sw=4 ts=4
 au FileType javascript setl sw=2 ts=2 et
 au FileType json setl sw=2 ts=2 et
-" au FileType javascript setl sw=4 ts=4
-au FileType json setl sw=2 ts=2 et
+au BufNewFile,BufRead *.svelte set nowrap tabstop=2 shiftwidth=2 expandtab
+au BufNewFile,BufRead *.ts set nowrap tabstop=2 shiftwidth=2 expandtab
+
 let php_sql_query = 0
 let php_sql_heredoc = 0
 let php_sql_nowdoc = 0
@@ -171,10 +173,6 @@ set completeopt=menu
 let g:go_fmt_fail_silently = 0
 nmap <Leader>t :GoTest<CR>
 
-" ----------- Vim Go ------------ "
-set completeopt=menu
-let g:go_fmt_fail_silently = 0
-
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
 
@@ -184,15 +182,12 @@ let g:NERDTreeHijackNetrw=1
 map <Leader>/ <Leader>c<Leader>
 map <c-/> <Leader>c<Leader>
 
-" ----------- Go -------------- "
-nmap <Leader>t :GoTest<CR>
-
 " ----------- NETRW ----------- "
-let g:netrw_banner = 1
+let g:netrw_banner = 0
 nnoremap - - " Override vim-vinegar map
 nmap _ <Plug>VinegarUp
 
-nmap <C-p> :FZF<cr>
+nmap <C-p> :GFiles<cr>
 
 " ------------- ALE ------------ "
 filetype off
@@ -216,9 +211,9 @@ let g:ale_fixers = {
       \	  	  'golint'
       \   ]
       \}
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_delay = 500
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_delay = 500
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% rule %code% says %s'
 let g:ale_php_phpcs_standard = "./fc-standard.xml"
@@ -240,14 +235,6 @@ function! RestoreRegister()
   return ''
 endfunction
       \}
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_delay = 500
-" let g:ale_javascript_eslint_options = '-c ../.eslintrc'
-let g:ale_statusline_format = ['X %d', '? %d', '']
-let g:ale_echo_msg_format = '%linter% says %s'
-let g:ale_php_phpcs_standard = "./fc-standard.xml"
-" let g:ale_dart_analysis_server_executable='/home/brandon/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot'
 
 nnoremap <silent> gd  :ALEGoToDefinition<CR>
 nnoremap <silent> gh  :ALEHover<CR>
@@ -350,5 +337,3 @@ function! DarkMode()
 endfunction
 
 
-" ------------- PROJECTS ------------ "
-autocmd BufNewFile,BufRead *.svelte set nowrap tabstop=2 shiftwidth=2 expandtab
