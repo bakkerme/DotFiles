@@ -48,10 +48,12 @@ PATH="$NPM_PACKAGES/bin:$PATH"
 unset MANPATH # delete if you already modified MANPATH elsewhere in your config
 MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
-precmd () { __git_ps1 "%~" "%s $ "  }
+NEWLINE=$'\n'
+
+precmd () { __git_ps1 "%~" "%s ${NEWLINE}$ "  }
 
 set -o PROMPT_SUBST
-export PS1='%F{black}%1~%f  $ '
+# export PS1="%F{black}%1~%f  $"
 
 source ~/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env
