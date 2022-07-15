@@ -50,7 +50,7 @@ MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
 NEWLINE=$'\n'
 
-precmd () { __git_ps1 "%~" "%s ${NEWLINE}$ "  }
+precmd () { __git_ps1 "%B%F{blue}%~%f%b" "%s %* ${NEWLINE}$ "  }
 
 set -o PROMPT_SUBST
 # export PS1="%F{black}%1~%f  $"
@@ -58,10 +58,12 @@ set -o PROMPT_SUBST
 source ~/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env
 
+/usr/bin/keychain -q --nogui  $HOME/.ssh/id_ed25519 $HOME/.ssh/id_rsa
+# /usr/bin/keychain -q --nogui  --agents gpg 71C83299ED32F14E
+source $HOME/.keychain/$HOST-sh
+
 bindkey -v
 export KEYTIMEOUT=1
-
-
 
 [ -f ~/fzf.zsh ] && source ~/.fzf.zsh # Repo version
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh # Arch repo
