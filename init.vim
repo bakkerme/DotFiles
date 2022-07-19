@@ -14,12 +14,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'autozimu/LanguageClient-neovim', {
-    " \ 'branch': 'next',
-    " \ 'do': 'bash install.sh',
-    " \ }
-" Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Plug '~/.fzf'
 " Plug '/usr/share/doc/fzf/examples/plugin/fzf.vim' 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -33,7 +28,7 @@ Plug 'neoclide/vim-jsx-improve'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'Shougo/deoplete-clangx'
+" Plug 'Shougo/deoplete-clangx'
 Plug 'dart-lang/dart-vim-plugin'
 " Plug 'evanleck/vim-svelte', {'branch': 'main'}
 " Plug 'hashivim/vim-terraform'
@@ -42,9 +37,12 @@ Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
 
 " Snippets
-Plug 'garbas/vim-snipmate'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
+" Plug 'garbas/vim-snipmate'
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'tomtom/tlib_vim'
+" Plug 'SirVer/ultisnips'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 
 " Color Schemes
@@ -108,7 +106,7 @@ hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
 " ----------- AUTOCOMPLETION ----------- "
-imap <C-o> <C-x><C-o>  
+inoremap <C-l> <C-x><C-o>  
 
 " ----------- BUFFERS ----------- "
 nmap <Leader>l :BufSurfForward<cr>
@@ -139,14 +137,11 @@ let g:dart_style_guide = 2
 let g:dart_format_on_save = 1
 
 " ----------- SNIPPETS --------- "
-autocmd BufRead,BufNewFile,BufEnter *.dart SnipMateLoadScope dart-flutter
-let g:snipMate = { 'snippet_version' : 1 }
-let g:svelte_indent_script = 0
-
-let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
-let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
-
-" call deoplete#custom#var('clangx', 'default_c_options', '`pkg-config --cflags gtk+-3.0`')
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
@@ -157,16 +152,6 @@ if executable('ag')
   " Use Ag over Grep
   set grepprg=ag\ --nogroup\ --nocolor
 endif
-
-" ----------- LANG SERVER ----------- "
-" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> <Leader>d :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " ----------- Vim Go ------------ "
 set completeopt=menu
@@ -193,6 +178,10 @@ nmap <C-p> :GFiles<cr>
 filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
+
+let g:ale_completion_enabled = 1
+let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
+let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
 
 let g:ale_php_phan_use_client = 1
 let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint']}
@@ -221,6 +210,11 @@ let g:ale_php_phpcs_standard = "./fc-standard.xml"
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
 nmap gq :ALEFix<CR>
+
+set omnifunc=ale#completion#OmniFunc
+
+" let g:deoplete#enable_at_startup = 1
+" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
