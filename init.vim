@@ -21,6 +21,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'github/copilot.vim'
+Plug 'tpope/vim-sleuth'
 
 " Syntax
 Plug 'neoclide/vim-jsx-improve'
@@ -31,7 +32,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'Shougo/deoplete-clangx'
 Plug 'dart-lang/dart-vim-plugin'
 " Plug 'evanleck/vim-svelte', {'branch': 'main'}
-" Plug 'hashivim/vim-terraform'
+Plug 'hashivim/vim-terraform'
 " Plug 'hashivim/vim-packer'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
@@ -85,7 +86,7 @@ set relativenumber
 set hidden
 set backupcopy=yes
 set inccommand=nosplit
-" set termguicolors
+set termguicolors
 
 " Nofril
 " let g:nofrils_heavylinenumbers=1
@@ -145,7 +146,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
-nmap <Leader>s :grep -r --ignore composer.phar --ignore composer.lock --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
+nmap <Leader>s :grep -r --hidden --ignore composer.phar --ignore composer.lock --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
 nmap <Leader>c :botright copen<cr>
 set hlsearch
 if executable('ag')
@@ -179,12 +180,12 @@ filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
-let g:ale_completion_enabled = 1
+" let g:ale_completion_enabled = 1
 let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
 let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
 
 let g:ale_php_phan_use_client = 1
-let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint']}
+let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet'], 'yaml': ['actionlint']}
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
