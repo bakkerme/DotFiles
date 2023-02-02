@@ -59,6 +59,7 @@ Plug 'logico-dev/typewriter'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'aunsira/macvim-light'
 Plug 'chriskempson/base16-vim'
+Plug 'mcchrish/zenbones.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -99,12 +100,28 @@ if &diff
 else
   colorscheme PaperColor
   set background=light
+  let g:zenbones_compat=1
   " colorscheme neonwave
   " set background=dark
   " set notermguicolors
 endif
 hi Search guibg=yellow guifg=black
 hi Search cterm=NONE ctermfg=black ctermbg=yellow
+
+if executable('win32yank.exe')
+  let g:clipboard = {
+            \   'name': 'win32yank-wsl',
+            \   'copy': {
+            \      '+': 'win32yank.exe -i --crlf',
+            \      '*': 'win32yank.exe -i --crlf',
+            \    },
+            \   'paste': {
+            \      '+': 'win32yank.exe -o --lf',
+            \      '*': 'win32yank.exe -o --lf',
+            \   },
+            \   'cache_enabled': 0,
+            \ }
+endif
 
 " ----------- AUTOCOMPLETION ----------- "
 inoremap <C-l> <C-x><C-o>  
@@ -188,6 +205,9 @@ let g:ale_php_phan_use_client = 1
 let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet'], 'yaml': ['actionlint']}
 let g:ale_fixers = {
       \   'javascript': [
+      \       'eslint'
+      \   ],
+      \   'typescript': [
       \       'eslint'
       \   ],
       \   'dart': [
@@ -327,8 +347,11 @@ function! LightMode()
 endfunction
 
 function! DarkMode()
-  colorscheme neonwave
+  " set notermguicolors
+  " colorscheme neonwave
+  colorscheme zenbones
   set background=dark
 endfunction
 
+" call DarkMode()
 
