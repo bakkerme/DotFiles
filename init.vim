@@ -22,6 +22,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
+Plug 'romainl/vim-qf'
 
 " Syntax
 Plug 'neoclide/vim-jsx-improve'
@@ -100,7 +101,6 @@ if &diff
 else
   colorscheme PaperColor
   set background=light
-  let g:zenbones_compat=1
   " colorscheme neonwave
   " set background=dark
   " set notermguicolors
@@ -193,16 +193,16 @@ nmap _ <Plug>VinegarUp
 nmap <C-p> :GFiles<cr>
 
 " ------------- ALE ------------ "
+let g:ale_completion_enabled = 1
 filetype off
 let &runtimepath.=',~/.vim/bundle/ale'
 filetype plugin indent on
 
-" let g:ale_completion_enabled = 1
 let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
 let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
 
 let g:ale_php_phan_use_client = 1
-let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet'], 'yaml': ['actionlint']}
+let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet', 'gopls'], 'yaml': ['actionlint']}
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
@@ -218,7 +218,7 @@ let g:ale_fixers = {
       \   ],
       \   'go': [
       \       'gofmt',
-      \	  	  'golint'
+      \	      'go vet'
       \   ]
       \}
 let g:ale_lint_on_text_changed = 'never'
@@ -232,7 +232,17 @@ nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
 nmap gq :ALEFix<CR>
 
-set omnifunc=ale#completion#OmniFunc
+function! SmartInsertCompletion() abort
+  " Use the default CTRL-N in completion menus
+  if pumvisible()
+    return "\<C-n>"
+  endif
+
+  " Exit and re-enter insert mode, and use insert completion
+  return "\<C-c>a\<C-n>"
+endfunction
+
+inoremap <silent> <C-n> <C-R>=SmartInsertCompletion()<CR>
 
 " let g:deoplete#enable_at_startup = 1
 " call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
@@ -292,11 +302,13 @@ function! HlIndent()
 endfunction
 
 function! LineWidth()
-  execute("vertical resize " . (strlen(getline(".")) + 10))
+  execute("vertical resize " . (strwidth(getline(".")) + 10))
 endfunction
 
 nmap gl :call LineWidth()<cr>
 nmap <Leader>r :%s //g<left><left>
+nmap <Leader>y "ay
+nmap <Leader>p "ap
 
 function! Wipeout()
   " list of *all* buffer numbers
@@ -349,9 +361,9 @@ endfunction
 function! DarkMode()
   " set notermguicolors
   " colorscheme neonwave
+  let g:zenbones_compat=1
   colorscheme zenbones
   set background=dark
 endfunction
 
 " call DarkMode()
-

@@ -58,10 +58,6 @@ set -o PROMPT_SUBST
 source ~/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.env
 
-/usr/bin/keychain -q --nogui  $HOME/.ssh/id_ed25519 $HOME/.ssh/id_rsa
-# /usr/bin/keychain -q --nogui  --agents gpg 71C83299ED32F14E
-source $HOME/.keychain/$HOST-sh
-
 bindkey -v
 export KEYTIMEOUT=1
 
@@ -92,14 +88,4 @@ if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
   chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
 fi
 
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/sls.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/sls.zsh
-# tabtab source for slss package
-# uninstall by removing these lines or running `tabtab uninstall slss`
-[[ -f /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/slss.zsh ]] && . /home/brandon/sources/tile-game-lite-mode/node_modules/tabtab/.completions/slss.zsh
 export PATH=/home/brandon/.pyenv/versions/3.7.2/bin:$PATH
