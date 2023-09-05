@@ -50,7 +50,14 @@ MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
 NEWLINE=$'\n'
 
-precmd () { __git_ps1 "%B%F{blue}%~%f%b" "%s %* ${NEWLINE}$ "  }
+# precmd () { __git_ps1 "%B%F{blue}%~%f%b" "%s %* ${NEWLINE}$ "  }
+precmd() {
+  local aws_vault_display=""
+  if [[ -n "$AWS_VAULT" ]]; then
+    aws_vault_display=" [vault:$AWS_VAULT] "
+  fi
+  __git_ps1 "%B%F{blue}%~%f%b" "${aws_vault_display}%s %* ${NEWLINE}$ "
+}
 
 set -o PROMPT_SUBST
 # export PS1="%F{black}%1~%f  $"

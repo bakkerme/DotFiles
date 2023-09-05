@@ -14,9 +14,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug '~/.fzf'
-" Plug '/usr/share/doc/fzf/examples/plugin/fzf.vim' 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'maksimr/vim-jsbeautify'
@@ -26,11 +23,9 @@ Plug 'romainl/vim-qf'
 
 " Syntax
 Plug 'neoclide/vim-jsx-improve'
-" Plug 'pangloss/vim-javascript'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Plug 'Shougo/deoplete-clangx'
 Plug 'dart-lang/dart-vim-plugin'
 " Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'hashivim/vim-terraform'
@@ -39,10 +34,6 @@ Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
 
 " Snippets
-" Plug 'garbas/vim-snipmate'
-" Plug 'MarcWeber/vim-addon-mw-utils'
-" Plug 'tomtom/tlib_vim'
-" Plug 'SirVer/ultisnips'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
@@ -69,7 +60,7 @@ let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
 nnoremap <Leader>w :w<CR>
-nnoremap <leader>= "+
+nnoremap <leader>= "+y
 
 " TYPO FIX
 map q: :q
@@ -202,7 +193,8 @@ let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
 let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
 
 let g:ale_php_phan_use_client = 1
-let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet', 'gopls'], 'yaml': ['actionlint']}
+let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet', 'gopls']}
+au BufRead,BufNewFile **/.github/workflows/*.yml let b:ale_linters = {'yaml': ['actionlint', 'yamllint'] }
 let g:ale_fixers = {
       \   'javascript': [
       \       'eslint'
@@ -228,6 +220,14 @@ let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% rule %code% says %s'
 let g:ale_php_phpcs_standard = "./fc-standard.xml"
 
+call ale#linter#Define('javascript', {
+  \   'name': 'javascript-typescript-langserver',
+  \   'lsp': 'stdio',
+  \   'executable': 'node',
+  \   'command': '%e /home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js',
+  \   'project_root': './',
+  \  })
+
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
 nmap gq :ALEFix<CR>
@@ -243,9 +243,6 @@ function! SmartInsertCompletion() abort
 endfunction
 
 inoremap <silent> <C-n> <C-R>=SmartInsertCompletion()<CR>
-
-" let g:deoplete#enable_at_startup = 1
-" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
@@ -362,7 +359,7 @@ function! DarkMode()
   " set notermguicolors
   " colorscheme neonwave
   let g:zenbones_compat=1
-  colorscheme zenbones
+  colorscheme PaperColor
   set background=dark
 endfunction
 
