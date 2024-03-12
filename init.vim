@@ -165,6 +165,12 @@ endif
 " ----------- Vim Go ------------ "
 set completeopt=menu
 let g:go_fmt_fail_silently = 0
+let g:go_fmt_autosave = 0
+let g:go_mod_fmt_autosave = 0
+let g:go_asmfmt_autosave = 0
+let g:go_metalinter_autosave = 0
+let g:go_imports_autosave = 0
+let g:go_def_mapping_enabled = 0
 nmap <Leader>t :GoTest<CR>
 
 " ----------- DEVDOCS ----------- "
@@ -209,8 +215,7 @@ let g:ale_fixers = {
       \       'php_cs_fixer'
       \   ],
       \   'go': [
-      \       'gofmt',
-      \	      'go vet'
+      \       'gofmt'
       \   ]
       \}
 let g:ale_lint_on_text_changed = 'never'
@@ -219,6 +224,7 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% rule %code% says %s'
 let g:ale_php_phpcs_standard = "./fc-standard.xml"
+let g:ale_fix_on_save = 1
 
 call ale#linter#Define('javascript', {
   \   'name': 'javascript-typescript-langserver',
@@ -230,7 +236,7 @@ call ale#linter#Define('javascript', {
 
 nnoremap gan :ALENextWrap<cr>
 nnoremap gap :ALEPreviousWrap<cr>
-nmap gq :ALEFix<CR>
+" nmap gq :ALEFix<CR>
 
 function! SmartInsertCompletion() abort
   " Use the default CTRL-N in completion menus
@@ -263,15 +269,6 @@ nnoremap <silent> gh  :ALEHover<CR>
 nnoremap <silent> gq  :ALEFix<CR>
 nnoremap <silent> gan :ALENextWrap<cr>
 nnoremap <silent> gap :ALEPreviousWrap<cr>
-
-" ------------- LANGSERVER ------------ "
-" let g:LanguageClient_serverCommands = {
-    " \ 'javascript': ['node', '/home/brandon/sources/javascript-typescript-langserver/lib/language-server-stdio.js'],
-    " \ }
-" " \ 'php': ['phan', '--daemonize-tcp-port',  'default']
-" "    \ 'dart': ['dart', '/home/brandon/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot', '--lsp']
-" let g:LanguageClient_windowLogMessageLevel = "Error"
-" let g:LanguageClient_diagnosticsEnable = 0
 
 " ------------- EDITOR CONFIG ------------ "
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
