@@ -25,13 +25,19 @@ Plug 'romainl/vim-qf'
 Plug 'neoclide/vim-jsx-improve'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'tag': 'v1.28', 'do': ':GoUpdateBinaries' }
 Plug 'dart-lang/dart-vim-plugin'
 " Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'hashivim/vim-terraform'
 " Plug 'hashivim/vim-packer'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
+
+" Golang
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'neovim/nvim-lspconfig'
+Plug 'ray-x/go.nvim'
+Plug 'ray-x/guihua.lua'
 
 " Snippets
 Plug 'Shougo/neosnippet.vim'
@@ -60,7 +66,7 @@ let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
 nnoremap <Leader>w :w<CR>
-nnoremap <leader>= "+y
+vmap <Leader>= "+y
 
 " TYPO FIX
 map q: :q
@@ -162,15 +168,20 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 endif
 
-" ----------- Vim Go ------------ "
-set completeopt=menu
-let g:go_fmt_fail_silently = 0
-let g:go_fmt_autosave = 0
-let g:go_mod_fmt_autosave = 0
-let g:go_asmfmt_autosave = 0
-let g:go_metalinter_autosave = 0
-let g:go_imports_autosave = 0
-let g:go_def_mapping_enabled = 0
+" ----------- Go NVIM ----------- "
+lua <<EOF
+local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+   require('go.format').goimports()
+  end,
+  group = format_sync_grp,
+})
+
+require('go').setup()
+EOF
+
 nmap <Leader>t :GoTest<CR>
 
 " ----------- DEVDOCS ----------- "
@@ -199,7 +210,7 @@ let g:ale_c_cc_executable = 'gcc' " Or use 'clang'
 let g:ale_c_cc_options = '-std=c11 -Wall `pkg-config --cflags gtk+-3.0`'
 
 let g:ale_php_phan_use_client = 1
-let g:ale_linters = {'php': ['php', 'phan'], 'dart': ['dartanalyzer', 'analysis_server'], 'go': ['golint', 'govet', 'gopls']}
+let g:ale_linters = {'php': ['php', 'phan'], 'go': ['golint', 'govet', 'gopls']}
 au BufRead,BufNewFile **/.github/workflows/*.yml let b:ale_linters = {'yaml': ['actionlint', 'yamllint'] }
 let g:ale_fixers = {
       \   'javascript': [
@@ -220,7 +231,6 @@ let g:ale_fixers = {
       \}
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
-" let g:ale_lint_delay = 500
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% rule %code% says %s'
 let g:ale_php_phpcs_standard = "./fc-standard.xml"
