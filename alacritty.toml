@@ -1,0 +1,63 @@
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "#bcbcbc"
+blue = "#0087af"
+cyan = "#005f87"
+green = "#008700"
+magenta = "#8700af"
+red = "#af0000"
+white = "#eeeeee"
+yellow = "#ffff1e"
+
+[colors.cursor]
+cursor = "#444444"
+text = "#eeeeee"
+
+[colors.normal]
+black = "#222222"
+blue = "#0087af"
+cyan = "#005f87"
+green = "#008700"
+magenta = "#8700af"
+red = "#af0000"
+white = "#ffffff"
+yellow = "#afaf08"
+
+[colors.primary]
+background = "#eeeeee"
+foreground = "#000000"
+
+[font]
+size = 9.0
+
+[font.bold]
+family = "Essential PragmataPro"
+
+[font.bold_italic]
+family = "Essential PragmataPro"
+
+[font.italic]
+family = "Essential PragmataPro"
+style = "Italic"
+
+[font.normal]
+family = "Essential PragmataPro"
+
+[font.offset]
+x = 0
+y = 1
+
+[shell]
+program = "wsl ~"
+
+[window]
+dynamic_padding = true
+dynamic_title = false
+startup_mode = "Maximized"
+title = "Alacritty"
+
+[window.padding]
+x = 4
+y = 4
