@@ -62,6 +62,8 @@ Plug 'mcchrish/zenbones.nvim'
 " Initialize plugin system
 call plug#end()
 
+let g:copilot_enabled=v:false
+
 let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
@@ -134,6 +136,8 @@ set dictionary+=~/.config/nvim/words
 
 " ----------- FILE TYPES ------- "
 au BufNewFile,BufRead *.ejs set filetype=javascript
+au BufNewFile,BufRead .envrc set filetype=sh
+au BufNewFile,BufRead .envrc.local set filetype=sh
 
 au FileType yaml setl ts=2 sts=2 sw=2 et
 au FileType php setl sw=4 ts=4
@@ -160,7 +164,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
-nmap <Leader>s :grep -r --hidden --ignore composer.phar --ignore composer.lock --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out  --vimgrep --ignore tags "" ./<left><left><left><left>
+nmap <Leader>s :grep -r --hidden --ignore composer.phar --ignore composer.lock --ignore-dir node_modules --ignore-dir vendor --ignore-dir php-app/fc/cdn_js/out --ignore-dir .git  --vimgrep --ignore tags "" ./<left><left><left><left>
 nmap <Leader>c :botright copen<cr>
 set hlsearch
 if executable('ag')
