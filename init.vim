@@ -17,7 +17,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'maksimr/vim-jsbeautify'
-Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'romainl/vim-qf'
 
@@ -62,13 +61,14 @@ Plug 'mcchrish/zenbones.nvim'
 " Initialize plugin system
 call plug#end()
 
-let g:copilot_enabled=v:false
-
 let mapleader = "\<Space>"
 imap jk <Esc>
 imap kj <Esc>
 nnoremap <Leader>w :w<CR>
 vmap <Leader>= "+y
+nmap <Leader>p "+p
+
+nmap <Leader>r :%s //g<left><left>
 
 " TYPO FIX
 map q: :q
@@ -88,6 +88,8 @@ set hidden
 set backupcopy=yes
 set inccommand=nosplit
 set termguicolors
+
+hi MatchParen NONE
 
 " Nofril
 " let g:nofrils_heavylinenumbers=1
@@ -160,7 +162,7 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 " Enable snipMate compatibility feature.
 let g:neosnippet#enable_snipmate_compatibility = 1
 " Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+let g:neosnippet#snippets_directory='~/.vim/plugged/vim-snippets/snippets'
 
 " ----------- SEARCH ----------- "
 " set wildignore=**/node_modules/*,**/vendor/*
@@ -314,9 +316,6 @@ function! LineWidth()
 endfunction
 
 nmap gl :call LineWidth()<cr>
-nmap <Leader>r :%s //g<left><left>
-nmap <Leader>y "ay
-nmap <Leader>p "ap
 
 function! Wipeout()
   " list of *all* buffer numbers
@@ -367,11 +366,13 @@ function! LightMode()
 endfunction
 
 function! DarkMode()
-  " set notermguicolors
+  set notermguicolors
   " colorscheme neonwave
   let g:zenbones_compat=1
   colorscheme PaperColor
   set background=dark
+  hi MatchParen NONE
+  set cursorline
 endfunction
 
 " call DarkMode()
