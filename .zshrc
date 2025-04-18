@@ -10,8 +10,6 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
 export PATH=$PATH:/usr/local/go/bin:$PATH
 export PATH=$HOME/sources/.bin:$PATH
-export PATH=$HOME/snap/flutter/common/flutter/bin/cache/dart-sdk/bin:$PATH
-export PATH=/usr/local/flutter/bin/:$PATH
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
 export MOZ_ENABLE_WAYLAND=1
@@ -24,8 +22,6 @@ alias gcm='git commit -m'
 alias gdf='git diff'
 alias gpb='git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias gpl='git pull origin $(git rev-parse --abbrev-ref HEAD)'
-
-alias setup_session_local='setup_session --server http://localhost --cacheRegion localhost'
 
 export HISTSIZE=10000
 export SAVEHIST=10000
