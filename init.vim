@@ -24,11 +24,9 @@ Plug 'romainl/vim-qf'
 Plug 'neoclide/vim-jsx-improve'
 Plug '2072/PHP-Indenting-for-Vim'
 Plug 'StanAngeloff/php.vim'
-" Plug 'fatih/vim-go', { 'tag': 'v1.28', 'do': ':GoUpdateBinaries' }
 Plug 'dart-lang/dart-vim-plugin'
 " Plug 'evanleck/vim-svelte', {'branch': 'main'}
 Plug 'hashivim/vim-terraform'
-" Plug 'hashivim/vim-packer'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
 
@@ -44,19 +42,12 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 
 " Color Schemes
-Plug 'robertmeta/nofrils'
-Plug 'wolverian/minimal'
-Plug 'elmindreda/vimcolors'
 Plug 'MidnaPeach/neonwave.vim'
-Plug 'dgraham/xcode-low-key-vim'
-Plug 'vim-scripts/mayansmoke'
-Plug 'andreypopp/vim-colors-plain'
-Plug 'Lokaltog/vim-monotone'
-Plug 'logico-dev/typewriter'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'aunsira/macvim-light'
-Plug 'chriskempson/base16-vim'
-Plug 'mcchrish/zenbones.nvim'
+
+" AI
+Plug 'frankroeder/parrot.nvim'
+Plug 'nvim-lua/plenary.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -189,6 +180,31 @@ require('go').setup()
 EOF
 
 nmap <Leader>t :GoTest<CR>
+
+" ----------- Parrot ----------- "
+lua <<EOF
+local conf = {
+  providers = {
+    custom = {
+      style = "openai",
+      api_key = os.getenv "FEATHERLESS_API_KEY",
+      endpoint = "https://api.featherless.ai/v1/chat/completions",
+      models = {
+        "Qwen/Qwen2.5-72B-Instruct",
+      },
+      topic = {
+        model = "Qwen/Qwen2.5-72B-Instruct",
+        params = { max_completion_tokens = 64 },
+      },
+      params = {
+        chat = { temperature = 1.1, top_p = 1 },
+        command = { temperature = 1.1, top_p = 1 },
+      },
+    },
+  },
+}
+require("parrot").setup(conf)
+EOF
 
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
