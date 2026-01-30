@@ -45,10 +45,6 @@ Plug 'honza/vim-snippets'
 Plug 'MidnaPeach/neonwave.vim'
 Plug 'NLKNguyen/papercolor-theme'
 
-" AI
-Plug 'frankroeder/parrot.nvim'
-Plug 'nvim-lua/plenary.nvim'
-
 " Initialize plugin system
 call plug#end()
 
@@ -180,31 +176,6 @@ require('go').setup()
 EOF
 
 nmap <Leader>t :GoTest<CR>
-
-" ----------- Parrot ----------- "
-lua <<EOF
-local conf = {
-  providers = {
-    custom = {
-      style = "openai",
-      api_key = os.getenv "FEATHERLESS_API_KEY",
-      endpoint = "https://api.featherless.ai/v1/chat/completions",
-      models = {
-        "Qwen/Qwen2.5-72B-Instruct",
-      },
-      topic = {
-        model = "Qwen/Qwen2.5-72B-Instruct",
-        params = { max_completion_tokens = 64 },
-      },
-      params = {
-        chat = { temperature = 1.1, top_p = 1 },
-        command = { temperature = 1.1, top_p = 1 },
-      },
-    },
-  },
-}
-require("parrot").setup(conf)
-EOF
 
 " ----------- DEVDOCS ----------- "
 nmap <Leader>k <Plug>(devdocs-under-cursor)
