@@ -14,7 +14,6 @@ require('lazy').setup({
   spec = {
     -- General
     { 'tpope/vim-sensible' },
-    { 'w0rp/ale' },
     { 'rhysd/devdocs.vim' },
     { 'ton/vim-bufsurf' },
     { 'numToStr/Comment.nvim', opts = {} },
@@ -241,44 +240,30 @@ map('n', '_', '<Plug>VinegarUp')
 
 map('n', '<C-p>', ':GFiles<CR>')
 
--- ------------- ALE ------------ --
-vim.g.ale_completion_enabled = 1
-
-vim.g.ale_c_cc_executable = 'gcc' -- Or use 'clang'
-vim.g.ale_c_cc_options = "-std=c11 -Wall `pkg-config --cflags gtk+-3.0`"
-
-vim.g.ale_php_phan_use_client = 1
-vim.g.ale_linters = { php = { 'php', 'phan' }, go = { 'golint', 'govet', 'gopls' } }
-vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-  pattern = '**/.github/workflows/*.yml',
-  callback = function()
-    vim.b.ale_linters = { yaml = { 'actionlint', 'yamllint' } }
+-- ------------- LSP ------------ --
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(event)
+    local opts = { buffer = event.buf, silent = true }
+    map('n', 'gd', vim.lsp.buf.definition, opts)
+    map('n', 'gh', vim.lsp.buf.hover, opts)
+    map('n', 'gr', vim.lsp.buf.references, opts)
+    map('n', '<Leader>rn', vim.lsp.buf.rename, opts)
+    map('n', 'gq', function() vim.lsp.buf.format({ async = true }) end, opts)
   end,
 })
-vim.g.ale_fixers = {
-  javascript = { 'eslint' },
-  typescript = { 'eslint' },
-  dart = { 'dartfmt' },
-  php = { 'php_cs_fixer' },
-  go = { 'gofmt' },
-}
-vim.g.ale_lint_on_text_changed = 'never'
-vim.g.ale_lint_on_insert_leave = 0
-vim.g.ale_statusline_format = { 'X %d', '? %d', '' }
-vim.g.ale_echo_msg_format = '%linter% rule %code% says %s'
-vim.g.ale_php_phpcs_standard = './fc-standard.xml'
-vim.g.ale_fix_on_save = 1
 
--- vim.fn['ale#linter#Define']('javascript', {
---   name = 'typescript-language-server',
---   lsp = 'stdio',
---   executable = 'npx',
---   command = 'typescript-language-server --stdio',
---   project_root = './',
--- })
+map('n', 'gan', function() vim.diagnostic.jump({ count = 1, float = true }) end, { silent = true })
+map('n', 'gap', function() vim.diagnostic.jump({ count = -1, float = true }) end, { silent = true })
 
-map('n', 'gan', ':ALENextWrap<CR>')
-map('n', 'gap', ':ALEPreviousWrap<CR>')
+local lsp_format_grp = vim.api.nvim_create_augroup('LspFormat', {})
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+  group = lsp_format_grp,
+})
 
 _G.SmartInsertCompletion = function()
   -- Use the default CTRL-N in completion menus
@@ -304,12 +289,6 @@ _G.RestoreRegister = function()
   vim.fn.setreg('"', restore_reg)
   return ''
 end
-
-map('n', 'gd', ':ALEGoToDefinition<CR>', { silent = true })
-map('n', 'gh', ':ALEHover<CR>', { silent = true })
-map('n', 'gq', ':ALEFix<CR>', { silent = true })
-map('n', 'gan', ':ALENextWrap<CR>', { silent = true })
-map('n', 'gap', ':ALEPreviousWrap<CR>', { silent = true })
 
 -- Hack fix enter being bound wrong
 map('n', '<CR>', '<CR>')
@@ -364,7 +343,6 @@ _G.JSPHP = function()
   vim.opt_local.shiftwidth = 4
   vim.opt_local.expandtab = false
   vim.opt_local.tabstop = 4
-  vim.cmd('ALEDisable')
 end
 
 _G.LightMode = function()
