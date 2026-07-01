@@ -5,7 +5,7 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
-export PATH=$(npm bin):$PATH
+# export PATH=$(npm bin):$PATH
 export PATH=$HOME/go/bin:$PATH
 export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
 export PATH=$PATH:/usr/local/go/bin:$PATH
@@ -74,8 +74,10 @@ export KEYTIMEOUT=1
 
 
 [ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh
-[ -f ~/DotFiles/helm-completion.zsh ] && source ~/DotFiles/helm-completion.zsh
-[ -f ~/DotFiles/kubectl-completion.zsh ] && source ~/DotFiles/kubectl-completion.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 _direnv_hook() {
   trap -- '' SIGINT;
@@ -91,20 +93,6 @@ if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
   chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
 fi
 
-export PATH=/home/brandon/.pyenv/versions/3.7.2/bin:$PATH
+eval `keychain --eval --agents ssh id_ed25519`
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/brandon/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/brandon/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/brandon/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/brandon/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 

@@ -20,11 +20,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/sources/zsh
 
 #neovim
 mkdir -p ~/.config/nvim/
-ln -s ~/DotFiles/init.vim ~/.config/nvim/init.vim
-
-#VimPlug for neovim
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+ln -s ~/DotFiles/init.lua ~/.config/nvim/init.lua
 
 #Javascript Server
 git clone https://github.com/sourcegraph/javascript-typescript-langserver.git ~/sources/javascript-typescript-langserver
