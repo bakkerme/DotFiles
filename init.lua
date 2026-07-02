@@ -23,7 +23,6 @@ require('lazy').setup({
     { 'tpope/vim-surround' },
     { 'tpope/vim-repeat' },
     { 'tpope/vim-vinegar' },
-    { 'editorconfig/editorconfig-vim' },
     { 'junegunn/fzf', build = function() vim.fn['fzf#install']() end },
     { 'junegunn/fzf.vim' },
     { 'maksimr/vim-jsbeautify' },
@@ -31,13 +30,12 @@ require('lazy').setup({
     { 'romainl/vim-qf' },
 
     -- Syntax
-    { 'neoclide/vim-jsx-improve' },
-    { '2072/PHP-Indenting-for-Vim', ft = 'php' },
-    { 'StanAngeloff/php.vim', ft = 'php' },
-    { 'dart-lang/dart-vim-plugin', ft = 'dart' },
+    -- { 'neoclide/vim-jsx-improve' },
+    -- { '2072/PHP-Indenting-for-Vim', ft = 'php' },
+    -- { 'StanAngeloff/php.vim', ft = 'php' },
     { 'hashivim/vim-terraform', ft = 'terraform' },
-    { 'HerringtonDarkholme/yats.vim', ft = { 'typescript', 'typescriptreact' } },
-    { 'leafgarland/typescript-vim', ft = { 'typescript', 'typescriptreact' } },
+    -- { 'HerringtonDarkholme/yats.vim', ft = { 'typescript', 'typescriptreact' } },
+    -- { 'leafgarland/typescript-vim', ft = { 'typescript', 'typescriptreact' } },
 
     -- LSP
     {
@@ -47,16 +45,31 @@ require('lazy').setup({
     },
 
     -- Golang
-    { 'nvim-treesitter/nvim-treesitter' },
-    { 'neovim/nvim-lspconfig' },
-    { 'ray-x/guihua.lua', build = 'cd lua/fzy && make' },
     {
-      'ray-x/go.nvim',
-      ft = 'go',
-      dependencies = { 'ray-x/guihua.lua' },
-      config = function()
-        require('go').setup()
+      "ray-x/go.nvim",
+      dependencies = {  -- optional packages
+        "ray-x/guihua.lua",
+        "neovim/nvim-lspconfig",
+        -- { "nvim-treesitter/nvim-treesitter", branch = 'main' } -- optional for master version
+      },
+      opts = function()
+        require("go").setup(opts)
+        local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          pattern = "*.go",
+          callback = function()
+            require('go.format').goimports()
+          end,
+          group = format_sync_grp,
+        })
+        return {
+          -- lsp_keymaps = false,
+          -- other options
+        }
       end,
+      event = {"CmdlineEnter"},
+      ft = {"go", 'gomod'},
+      build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
     },
 
     -- Snippets
@@ -205,8 +218,6 @@ vim.g.php_sql_nowdoc = 0
 vim.g.vim_markdown_folding_disabled = 1
 vim.g.jsx_ext_required = 0
 vim.g.javascript_plugin_jsdoc = 1
-vim.g.dart_style_guide = 2
-vim.g.dart_format_on_save = 1
 
 -- ----------- SNIPPETS ----------- --
 map('i', '<C-k>', '<Plug>(neosnippet_expand_or_jump)')
