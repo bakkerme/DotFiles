@@ -247,7 +247,7 @@ vim.g.netrw_banner = 0
 map('n', '-', '-') -- Override vim-vinegar map
 map('n', '_', '<Plug>VinegarUp')
 
-map('n', '<C-p>', ':GFiles<CR>')
+map('n', '<C-p>', ':FZF<CR>')
 
 -- ------------- LSP ------------ --
 vim.api.nvim_create_autocmd('LspAttach', {
