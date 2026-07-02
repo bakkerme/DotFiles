@@ -33,24 +33,24 @@ foreground = "#000000"
 size = 9.0
 
 [font.bold]
-family = "Essential PragmataPro"
+family = "Iosevka Term"
 
 [font.bold_italic]
-family = "Essential PragmataPro"
+family = "Iosevka Term"
 
 [font.italic]
-family = "Essential PragmataPro"
+family = "Iosevka Term"
 style = "Italic"
 
 [font.normal]
-family = "Essential PragmataPro"
+family = "Iosevka Term"
 
 [font.offset]
 x = 0
 y = 1
 
-[shell]
-program = "wsl ~"
+[terminal.shell]
+program = "/bin/zsh"
 
 [window]
 dynamic_padding = true

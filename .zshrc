@@ -5,7 +5,6 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/tooling/vendor/bin:$PATH
 export PATH=$HOME/.config/composer/vendor/bin:$PATH
-# export PATH=$(npm bin):$PATH
 export PATH=$HOME/go/bin:$PATH
 export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
 export PATH=$PATH:/usr/local/go/bin:$PATH
@@ -13,6 +12,8 @@ export PATH=$HOME/sources/.bin:$PATH
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
 export MOZ_ENABLE_WAYLAND=1
+
+export EDITOR=nvim
 
 alias vim='nvim'
 alias l='ls -lah --color'
@@ -94,5 +95,3 @@ if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
 fi
 
 eval `keychain --eval --agents ssh id_ed25519`
-
-
