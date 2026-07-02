@@ -67,6 +67,15 @@ require('lazy').setup({
     -- Color Schemes
     { 'MidnaPeach/neonwave.vim' },
     { 'NLKNguyen/papercolor-theme' },
+    {
+        "sonph/onehalf",
+        lazy = false,
+        config = function(plugin)
+            vim.opt.rtp:append(plugin.dir .. "/vim")
+            vim.cmd [[ colorscheme onehalfdark ]]
+            -- or vim.cmd [[ colorscheme onehalflight ]] if you prefer light theme
+        end
+    },
   },
 })
 
@@ -109,16 +118,16 @@ vim.opt.dictionary:append('~/.config/nvim/words')
 vim.api.nvim_set_hl(0, 'MatchParen', {})
 
 -- ----------- COLORSCHEME ----------- --
-if vim.o.diff then
-  vim.opt.background = 'light'
-  vim.cmd.colorscheme('xcode-low-key')
-else
-  vim.cmd.colorscheme('PaperColor')
-  vim.opt.background = 'light'
-  -- vim.cmd.colorscheme('neonwave')
-  -- vim.opt.background = 'dark'
-  -- vim.opt.termguicolors = false
-end
+-- if vim.o.diff then
+--   vim.opt.background = 'light'
+--   vim.cmd.colorscheme('xcode-low-key')
+-- else
+--   vim.cmd.colorscheme('PaperColor')
+--   vim.opt.background = 'light'
+--   -- vim.cmd.colorscheme('neonwave')
+--   -- vim.opt.background = 'dark'
+--   -- vim.opt.termguicolors = false
+-- end
 
 vim.api.nvim_set_hl(0, 'Search', { bg = 'yellow', fg = 'black' })
 
@@ -351,10 +360,10 @@ _G.LightMode = function()
 end
 
 _G.DarkMode = function()
-  vim.opt.termguicolors = false
+  vim.opt.termguicolors = true
   -- vim.cmd.colorscheme('neonwave')
   vim.g.zenbones_compat = 1
-  vim.cmd.colorscheme('PaperColor')
+  vim.cmd.colorscheme('onehalfdark')
   vim.opt.background = 'dark'
   vim.api.nvim_set_hl(0, 'MatchParen', {})
   vim.opt.cursorline = true
