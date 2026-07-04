@@ -16,7 +16,6 @@ require('lazy').setup({
     { 'tpope/vim-sensible' },
     { 'rhysd/devdocs.vim' },
     { 'ton/vim-bufsurf' },
-    { 'numToStr/Comment.nvim', opts = {} },
     { 'christoomey/vim-tmux-navigator' },
     { 'tpope/vim-fugitive' },
     { 'tpope/vim-rhubarb' },
@@ -247,11 +246,14 @@ map('n', '<Leader>t', ':GoTest<CR>')
 -- ----------- DEVDOCS ----------- --
 map('n', '<Leader>k', '<Plug>(devdocs-under-cursor)')
 
--- ----------- COMMENTING ----------- --
-map('n', '<Leader>/', '<Plug>(comment_toggle_linewise_current)')
-map('x', '<Leader>/', '<Plug>(comment_toggle_linewise_visual)')
-map('n', '<C-/>', '<Plug>(comment_toggle_linewise_current)')
-map('x', '<C-/>', '<Plug>(comment_toggle_linewise_visual)')
+-- ----------- COMMENTING (native vim._comment) ----------- --
+-- Neovim ships built-in commenting via the `gc`/`gcc` mappings.
+-- `remap = true` is required so <Leader>/ resolves to the native `gcc`/`gc`
+-- mappings instead of feeding literal `g c c` keystrokes (which a
+-- non-recursive map would do -- that's why a plain `map('n', '<Leader>/', 'gcc')`
+-- does nothing).
+map('n', '<Leader>/', 'gcc', { remap = true, desc = 'Toggle comment line' })
+map('x', '<Leader>/', 'gc', { remap = true, desc = 'Toggle comment (visual)' })
 
 -- ----------- NETRW ----------- --
 vim.g.netrw_banner = 0
