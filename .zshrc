@@ -10,6 +10,7 @@ export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools
 export PATH=$PATH:/usr/local/go/bin:$PATH
 export PATH=$HOME/sources/.bin:$PATH
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+export PATH=/home/brandon/.platformio/penv/bin/:$PATH
 
 export MOZ_ENABLE_WAYLAND=1
 
@@ -94,4 +95,10 @@ if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
   chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
 fi
 
-eval `keychain --eval --agents ssh id_ed25519`
+# eval `keychain --eval --agents ssh id_ed25519`
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<

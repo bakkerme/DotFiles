@@ -200,6 +200,11 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'json',
   command = 'setlocal sw=2 ts=2 et',
 })
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup,
+  pattern = { 'text', 'markdown' },
+  command = 'setlocal wrap',
+})
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
   group = augroup,
   pattern = '*.svelte',
