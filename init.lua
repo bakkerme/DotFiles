@@ -10,6 +10,22 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Theme helpers (shared by :LightMode/:DarkMode and auto-dark-mode.nvim)
+_G.LightMode = function()
+  vim.opt.termguicolors = true
+  vim.cmd.colorscheme('onehalflight')
+  vim.opt.background = 'light'
+  vim.api.nvim_set_hl(0, 'MatchParen', {})
+end
+
+_G.DarkMode = function()
+  vim.opt.termguicolors = true
+  vim.cmd.colorscheme('onehalfdark')
+  vim.opt.background = 'dark'
+  vim.api.nvim_set_hl(0, 'MatchParen', {})
+  vim.opt.cursorline = true
+end
+
 require('lazy').setup({
   spec = {
     -- General
@@ -36,6 +52,14 @@ require('lazy').setup({
     -- { 'HerringtonDarkholme/yats.vim', ft = { 'typescript', 'typescriptreact' } },
     -- { 'leafgarland/typescript-vim', ft = { 'typescript', 'typescriptreact' } },
 
+    -- Markdown (in-buffer render; still editable)
+    -- Uses Neovim's bundled markdown/markdown_inline parsers + queries.
+    {
+      'MeanderingProgrammer/render-markdown.nvim',
+      ft = { 'markdown' },
+      opts = {},
+    },
+
     -- LSP
     {
       "pmizio/typescript-tools.nvim",
@@ -49,7 +73,6 @@ require('lazy').setup({
       dependencies = {  -- optional packages
         "ray-x/guihua.lua",
         "neovim/nvim-lspconfig",
-        -- { "nvim-treesitter/nvim-treesitter", branch = 'main' } -- optional for master version
       },
       opts = function()
         require("go").setup(opts)
@@ -80,13 +103,30 @@ require('lazy').setup({
     { 'MidnaPeach/neonwave.vim' },
     { 'NLKNguyen/papercolor-theme' },
     {
-        "sonph/onehalf",
-        lazy = false,
-        config = function(plugin)
-            vim.opt.rtp:append(plugin.dir .. "/vim")
-            vim.cmd [[ colorscheme onehalfdark ]]
-            -- or vim.cmd [[ colorscheme onehalflight ]] if you prefer light theme
-        end
+      "sonph/onehalf",
+      lazy = false,
+      priority = 1000,
+      config = function(plugin)
+        -- onehalf ships vimscript colorschemes under vim/
+        vim.opt.rtp:append(plugin.dir .. "/vim")
+      end,
+    },
+    {
+      "f-person/auto-dark-mode.nvim",
+      commit = "54058b4fe414bd64bd2904a6f8a63f1f14e3d8df",
+      lazy = false,
+      priority = 1000,
+      dependencies = { "sonph/onehalf" },
+      opts = {
+        fallback = "dark",
+        update_interval = 3000,
+        set_dark_mode = function()
+          DarkMode()
+        end,
+        set_light_mode = function()
+          LightMode()
+        end,
+      },
     },
   },
 })
@@ -205,6 +245,14 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'text', 'markdown' },
   command = 'setlocal wrap',
 })
+-- Enable built-in treesitter highlighting for markdown (parsers ship with Nvim).
+vim.api.nvim_create_autocmd('FileType', {
+  group = augroup,
+  pattern = { 'markdown' },
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
+})
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
   group = augroup,
   pattern = '*.svelte',
@@ -219,7 +267,6 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
 vim.g.php_sql_query = 0
 vim.g.php_sql_heredoc = 0
 vim.g.php_sql_nowdoc = 0
-vim.g.vim_markdown_folding_disabled = 1
 vim.g.jsx_ext_required = 0
 vim.g.javascript_plugin_jsdoc = 1
 
@@ -372,24 +419,7 @@ _G.JSPHP = function()
   vim.opt_local.tabstop = 4
 end
 
-_G.LightMode = function()
-  vim.cmd.colorscheme('PaperColor')
-  vim.opt.background = 'light'
-end
-
-_G.DarkMode = function()
-  vim.opt.termguicolors = true
-  -- vim.cmd.colorscheme('neonwave')
-  vim.g.zenbones_compat = 1
-  vim.cmd.colorscheme('onehalfdark')
-  vim.opt.background = 'dark'
-  vim.api.nvim_set_hl(0, 'MatchParen', {})
-  vim.opt.cursorline = true
-end
-
 vim.api.nvim_create_user_command('Wipeout', Wipeout, {})
 vim.api.nvim_create_user_command('JSPHP', JSPHP, {})
 vim.api.nvim_create_user_command('LightMode', LightMode, {})
 vim.api.nvim_create_user_command('DarkMode', DarkMode, {})
-
--- DarkMode()
