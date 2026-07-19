@@ -1,0 +1,27 @@
+# Ghostty config (macOS + Linux).
+# Install targets (install.sh links these):
+#   XDG: ~/.config/ghostty/config
+#   macOS also: ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty
+
+# Follow OS light/dark appearance (works on macOS; Linux uses portal when available)
+theme = light:One Half Light,dark:One Half Dark
+
+# Use the login shell (Homebrew zsh on Apple Silicon when set as default)
+# shell-integration = zsh
+# command = /bin/zsh -l   # only if you need to force a shell
+
+# Truecolor is default; keep clipboard integration on for OSC 52 / nvim
+clipboard-read = allow
+clipboard-write = allow
+
+# Force CSI-u sequences for modified keys that classic terminals cannot encode.
+# Required for Grok (and similar TUIs) inside tmux: tmux does not fully speak the
+# Kitty keyboard protocol, so Ghostty must emit fixterms/CSI-u bytes itself.
+# Sequences match tmux extended-keys-format csi-u / Grok expectations.
+# (macOS Terminal.app cannot do this; use Ghostty or Alacritty for those chords.)
+keybind = ctrl+period=text:\x1b[46;5u
+keybind = ctrl+comma=text:\x1b[44;5u
+keybind = ctrl+semicolon=text:\x1b[59;5u
+keybind = ctrl+apostrophe=text:\x1b[39;5u
+keybind = ctrl+enter=text:\x1b[13;5u
+keybind = shift+enter=text:\x1b[13;2u

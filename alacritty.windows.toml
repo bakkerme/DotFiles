@@ -1,0 +1,23 @@
+# Windows-host Alacritty overrides (launch WSL, not PowerShell).
+#
+# Option A — import from alacritty.toml on the Windows side:
+#   [general]
+#   import = ["C:\\Users\\YOU\\DotFiles\\alacritty.windows.toml"]
+#
+# Option B — use this file alone as %APPDATA%\alacritty\alacritty.toml
+# after merging colors/fonts from alacritty.toml, or:
+#   alacritty --config-file path\to\alacritty.toml
+# with import pointing here.
+
+[terminal.shell]
+program = "wsl.exe"
+args = ["-e", "zsh", "-l"]
+
+# Optional: land in your Linux home
+# [terminal]
+# working_directory is not set; WSL starts in distro home with -e zsh -l
+
+[env]
+# Leave TERM to Alacritty; ensure terminfo exists inside WSL if needed:
+#   infocmp alacritty >/dev/null || echo "install ncurses-term / alacritty terminfo in WSL"
+COLORTERM = "truecolor"

@@ -1,3 +1,13 @@
+# Shared Alacritty config (TOML; Alacritty >= 0.13).
+# Install:
+#   macOS/Linux/WSL guest (if you run Alacritty inside Linux): ~/.config/alacritty/alacritty.toml
+#   Windows host: %APPDATA%\alacritty\alacritty.toml  (see alacritty.windows.toml for shell)
+
+[general]
+# On Windows host, create/import OS-specific shell overrides, e.g.:
+# import = ["alacritty.windows.toml"]
+live_config_reload = true
+
 [colors]
 draw_bold_text_with_bright_colors = true
 
@@ -29,8 +39,14 @@ yellow = "#afaf08"
 background = "#eeeeee"
 foreground = "#000000"
 
+[env]
+# Do not force TERM=alacritty here: WSL/remote hosts often lack that terminfo
+# entry and break with "unknown terminal type". Alacritty sets TERM itself when
+# its terminfo is installed; COLORTERM is enough for truecolor-aware apps.
+COLORTERM = "truecolor"
+
 [font]
-size = 9.0
+size = 12.0
 
 [font.bold]
 family = "Iosevka Term"
@@ -49,15 +65,30 @@ family = "Iosevka Term"
 x = 0
 y = 1
 
-[terminal.shell]
-program = "/bin/zsh"
+# Shell intentionally omitted on Unix so the login shell is used
+# (Homebrew zsh on macOS, distro zsh on Linux). On Windows host → WSL,
+# import alacritty.windows.toml or set [terminal.shell] there.
 
 [window]
 dynamic_padding = true
-dynamic_title = false
+dynamic_title = true
+# "Maximized" is fine on desktop Linux/Windows; on macOS it still works.
 startup_mode = "Maximized"
 title = "Alacritty"
 
 [window.padding]
 x = 4
 y = 4
+
+[keyboard]
+# CSI-u for Grok / modern TUIs (pairs with tmux extended-keys-format csi-u).
+# Alacritty does not speak Kitty keyboard protocol the same way as Ghostty;
+# these bindings force the same fixterm sequences.
+bindings = [
+  { key = "Enter", mods = "Shift", chars = "\u001b[13;2u" },
+  { key = "Enter", mods = "Control", chars = "\u001b[13;5u" },
+  { key = "Period", mods = "Control", chars = "\u001b[46;5u" },
+  { key = "Comma", mods = "Control", chars = "\u001b[44;5u" },
+  { key = "Semicolon", mods = "Control", chars = "\u001b[59;5u" },
+  { key = "Apostrophe", mods = "Control", chars = "\u001b[39;5u" },
+]

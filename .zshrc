@@ -1,23 +1,84 @@
-export ANDROID_SDK=$HOME/Android/Sdk/
+# Resolve DotFiles root from this file (follows symlink: ~/.zshrc -> DotFiles/.zshrc)
+DOTFILES="${${(%):-%x}:A:h}"
+OS="$(uname -s)"
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/.cargo/bin:$PATH
-export PATH=$HOME/tooling/vendor/bin:$PATH
-export PATH=$HOME/.config/composer/vendor/bin:$PATH
-export PATH=$HOME/go/bin:$PATH
-export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools:$PATH
-export PATH=$PATH:/usr/local/go/bin:$PATH
-export PATH=$HOME/sources/.bin:$PATH
-export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
-export PATH=/home/brandon/.platformio/penv/bin/:$PATH
+# WSL (Windows Terminal / Alacritty → Linux guest). uname is still "Linux".
+if [[ -n "${WSL_DISTRO_NAME:-}" ]] || [[ -r /proc/version && "$(</proc/version)" == *[Mm]icrosoft* ]]; then
+  IS_WSL=1
+else
+  IS_WSL=0
+fi
 
-export MOZ_ENABLE_WAYLAND=1
+# Homebrew: Apple Silicon, Intel Mac, Linuxbrew (incl. WSL)
+for _brew_prefix in /opt/homebrew /usr/local /home/linuxbrew/.linuxbrew; do
+  if [[ -x "$_brew_prefix/bin/brew" ]]; then
+    eval "$("$_brew_prefix/bin/brew" shellenv)"
+    break
+  fi
+done
+unset _brew_prefix
 
-export EDITOR=nvim
+# Prefer existing ANDROID_SDK; common locations differ by host
+if [[ -z "${ANDROID_SDK:-}" ]]; then
+  for _sdk in "$HOME/Android/Sdk" "$HOME/Library/Android/sdk" "/mnt/c/Users/$USER/AppData/Local/Android/Sdk"; do
+    if [[ -d "$_sdk" ]]; then
+      export ANDROID_SDK="$_sdk"
+      break
+    fi
+  done
+  unset _sdk
+fi
+export ANDROID_SDK="${ANDROID_SDK:-$HOME/Android/Sdk}"
+
+# Prepend only existing path entries (keeps PATH clean on machines missing a tool)
+_path_prepend() {
+  local p
+  for p in "$@"; do
+    [[ -d "$p" ]] || continue
+    case ":$PATH:" in
+      *":$p:"*) ;;
+      *) PATH="$p${PATH:+:$PATH}" ;;
+    esac
+  done
+}
+
+_path_prepend \
+  "$HOME/bin" \
+  "/usr/local/bin" \
+  "$HOME/.local/bin" \
+  "$HOME/.cargo/bin" \
+  "$HOME/tooling/vendor/bin" \
+  "$HOME/.config/composer/vendor/bin" \
+  "$HOME/go/bin" \
+  "${ANDROID_SDK}/emulator" \
+  "${ANDROID_SDK}/tools" \
+  "${ANDROID_SDK}/platform-tools" \
+  "/usr/local/go/bin" \
+  "$HOME/sources/.bin"
+
+# PlatformIO virtualenv (if installed)
+_path_prepend "$HOME/.platformio/penv/bin"
+
+export PATH
+
+# Wayland is Linux-native only (not macOS, not useful inside pure WSL GUIless sessions)
+if [[ "$OS" == "Linux" && "$IS_WSL" -eq 0 ]]; then
+  export MOZ_ENABLE_WAYLAND=1
+fi
+
+export EDITOR="${EDITOR:-nvim}"
+export VISUAL="${VISUAL:-$EDITOR}"
+
+# Truecolor hint for apps that check COLORTERM (Terminal.app, Windows Terminal, Alacritty, Ghostty)
+export COLORTERM="${COLORTERM:-truecolor}"
 
 alias vim='nvim'
-alias l='ls -lah --color'
+# GNU ls uses --color; BSD ls (stock macOS) uses -G
+if ls --color=auto / >/dev/null 2>&1; then
+  alias l='ls -lah --color=auto'
+else
+  alias l='ls -lahG'
+fi
 alias gst='git status'
 alias gap='git add -p'
 alias gcm='git commit -m'
@@ -37,68 +98,83 @@ setopt hist_ignore_space # Don't preserve spaces. You may want to turn it off
 setopt no_hist_beep # don't beep
 setopt share_history # share history between session/terminals
 
-source ~/DotFiles/git-prompt.sh
+[[ -f "$DOTFILES/git-prompt.sh" ]] && source "$DOTFILES/git-prompt.sh"
 
-prefix=${HOME}/.npm-packages
 export NPM_PACKAGES="${HOME}/.npm-packages"
-NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
-PATH="$NPM_PACKAGES/bin:$PATH"
-unset MANPATH # delete if you already modified MANPATH elsewhere in your config
-MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:$NODE_PATH}"
+_path_prepend "$NPM_PACKAGES/bin"
+export PATH
+# Prefer not to clobber a user-set MANPATH permanently; only extend if manpath exists
+if command -v manpath >/dev/null 2>&1; then
+  export MANPATH="$NPM_PACKAGES/share/man:$(manpath 2>/dev/null)"
+fi
 
 NEWLINE=$'\n'
 
-# precmd () { __git_ps1 "%B%F{blue}%~%f%b" "%s %* ${NEWLINE}$ "  }
 precmd() {
   local aws_vault_display=""
-  if [[ -n "$AWS_VAULT" ]]; then
+  if [[ -n "${AWS_VAULT:-}" ]]; then
     aws_vault_display=" [vault:$AWS_VAULT] "
   fi
-  __git_ps1 "%B%F{blue}%~%f%b" "${aws_vault_display}%s %* ${NEWLINE}$ "
+  if typeset -f __git_ps1 >/dev/null 2>&1; then
+    __git_ps1 "%B%F{blue}%~%f%b" "${aws_vault_display}%s %* ${NEWLINE}$ "
+  else
+    PROMPT="%B%F{blue}%~%f%b${aws_vault_display} %* ${NEWLINE}$ "
+  fi
 }
 
 set -o PROMPT_SUBST
-# export PS1="%F{black}%1~%f  $"
 
-source ~/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.env
+[[ -f "$HOME/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
+  source "$HOME/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[[ -f "$HOME/.env" ]] && source "$HOME/.env"
 
 bindkey -v
 export KEYTIMEOUT=1
 
-[ -f ~/fzf.zsh ] && source ~/.fzf.zsh # Repo version
-[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh # Arch repo
-[ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh # Fedora
-[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh # Arch
+# fzf: prefer installer-generated file, then Homebrew, then distro packages
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+  source "$HOME/.fzf.zsh"
+else
+  for _fzf_dir in \
+    ${HOMEBREW_PREFIX:+"$HOMEBREW_PREFIX/opt/fzf/shell"} \
+    /usr/share/fzf/shell \
+    /usr/share/fzf \
+    /usr/share/doc/fzf/examples
+  do
+    if [[ -n "$_fzf_dir" && -f "$_fzf_dir/key-bindings.zsh" ]]; then
+      source "$_fzf_dir/key-bindings.zsh"
+      [[ -f "$_fzf_dir/completion.zsh" ]] && source "$_fzf_dir/completion.zsh"
+      break
+    fi
+  done
+  unset _fzf_dir
+fi
 
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh # Fedora
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh # Arch repo
-
-
-[ -f ./git-completion.zsh ] && zstyle ':completion:*:*:git:*' script ./git-completion.zsh
+# Git completion helper from this repo
+if [[ -f "$DOTFILES/git-completion.zsh" ]]; then
+  zstyle ':completion:*:*:git:*' script "$DOTFILES/git-completion.zsh"
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-_direnv_hook() {
-  trap -- '' SIGINT;
-  eval "$("/usr/bin/direnv" export zsh)";
-  trap - SIGINT;
-}
-typeset -ag precmd_functions;
-if [[ -z ${precmd_functions[(r)_direnv_hook]} ]]; then
-  precmd_functions=( _direnv_hook ${precmd_functions[@]} )
-fi
-typeset -ag chpwd_functions;
-if [[ -z ${chpwd_functions[(r)_direnv_hook]} ]]; then
-  chpwd_functions=( _direnv_hook ${chpwd_functions[@]} )
+# direnv: use whatever is on PATH (Homebrew, apt, scoop/WSL, etc.)
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
 fi
 
 # eval `keychain --eval --agents ssh id_ed25519`
 
 # >>> grok installer >>>
-export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
+_path_prepend "$HOME/.grok/bin"
+export PATH
+if [[ -d "$HOME/.grok/completions/zsh" ]]; then
+  fpath=("$HOME/.grok/completions/zsh" $fpath)
+fi
 autoload -Uz compinit && compinit -C
 # <<< grok installer <<<
+
+unset -f _path_prepend
+unset IS_WSL
