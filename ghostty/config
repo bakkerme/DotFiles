@@ -25,3 +25,5 @@ keybind = ctrl+semicolon=text:\x1b[59;5u
 keybind = ctrl+apostrophe=text:\x1b[39;5u
 keybind = ctrl+enter=text:\x1b[13;5u
 keybind = shift+enter=text:\x1b[13;2u
+# Agent Dashboard (Grok). Force CSI-u so tmux + extended-keys always deliver it.
+keybind = ctrl+backslash=text:\x1b[92;5u

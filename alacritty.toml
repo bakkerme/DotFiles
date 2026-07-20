@@ -91,4 +91,6 @@ bindings = [
   { key = "Comma", mods = "Control", chars = "\u001b[44;5u" },
   { key = "Semicolon", mods = "Control", chars = "\u001b[59;5u" },
   { key = "Apostrophe", mods = "Control", chars = "\u001b[39;5u" },
+  # Grok Agent Dashboard
+  { key = "Backslash", mods = "Control", chars = "\u001b[92;5u" },
 ]
